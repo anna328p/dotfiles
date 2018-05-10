@@ -11,9 +11,7 @@ export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=11'
 eval `dircolors ~/.dircolors`
 [ $DISPLAY ] && xrdb ~/.Xresources
 
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:/home/dmitry/.gem/ruby/2.4.0/bin:$PATH
-#export PATH="$PATH:$HOME/.rvm/bin"
+export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:/home/dmitry/.gem/ruby/2.5.0/bin:$PATH
 
 hash -d w='/home/dmitry/work'
 
@@ -101,4 +99,4 @@ bindkey "\e\e" sudo-command-line
 
 [ -f /usr/share/doc/pkgfile/command-not-found.zsh ] && source /usr/share/doc/pkgfile/command-not-found.zsh
 source ~/.local/share/icons-in-terminal/icons_bash.sh
-source /storage/opt/intel/system_studio_2018/compilers_and_libraries_2018.2.199/linux/bin/iccvars.sh intel64
+#source /storage/opt/intel/system_studio_2018/compilers_and_libraries_2018.2.199/linux/bin/iccvars.sh intel64
