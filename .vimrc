@@ -37,6 +37,8 @@ set showcmd
 set incsearch
 set hlsearch
 set cursorline
+set splitbelow
+set splitright
 
 let  $NVIM_TUI_ENABLE_CURSOR_SHAPE=0
 
