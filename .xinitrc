@@ -1,1 +1,0 @@
-/home/dmitry/.xinitrc##Linux.wat
