@@ -1,44 +1,38 @@
-set nocompatible
-
-"execute pathogen#infect('~/.vim/bundle/{}')
-syntax on
-filetype plugin indent on
-syntax on
-set tabstop=4
+"set expandtab
 "set smarttab
-set ignorecase
-set smartcase
-set wrap
-set copyindent
+filetype plugin indent on
+set autoindent
+set autoread
+set background=dark
 set backspace=indent,eol,start
+set clipboard+=unnamed
+set copyindent
+set cursorline
+set formatoptions+=j
+set hidden
+set hlsearch
+set ignorecase
+set incsearch
+set laststatus=2
+set mouse=a
+set noshowmode
+set number
+set ruler
+set scrolloff=3
+set shiftwidth=4
+set showcmd
+set sidescrolloff=5
+set smartcase
+set splitbelow
+set splitright
+set tabstop=4
 set title
+set ttimeoutlen=50
 set undofile
 set undolevels=1000
 set undoreload=10000
-set autoread
-set hidden
-set scrolloff=3
-set sidescrolloff=5
-filetype plugin on
-set clipboard+=unnamed
-set noshowmode
-set formatoptions+=j
-set shiftwidth=4
-set autoindent
-"set expandtab
-set number
-set background=dark
-set mouse=a
-set laststatus=2
-set ttimeoutlen=50
-set backspace=indent,eol,start
-set ruler
-set showcmd
-set incsearch
-set hlsearch
-set cursorline
-set splitbelow
-set splitright
+set wrap
+syntax on
 
 let  $NVIM_TUI_ENABLE_CURSOR_SHAPE=0
 
@@ -148,13 +142,18 @@ endif
 "custom command to also update remote plugins for stuff like deoplete
 let g:update_daily = 'PU'
 
+"airline
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_detect_paste=1
+
+"NERDTree
 nmap <silent> <leader>t :NERDTreeTabsToggle<CR>
-" let g:nerdtree_tabs_open_on_console_startup = 1
-let g:syntastic_error_symbol = '✘'
-let g:syntastic_warning_symbol = "▲"
+let g:nerdtree_tabs_open_on_console_startup = 1
+
+"Syntastic
+let g:syntastic_error_symbol = 'E'
+let g:syntastic_warning_symbol = "W"
 augroup mySyntastic
   au!
   au FileType tex let b:syntastic_mode = "passive"
@@ -204,7 +203,6 @@ augroup END"'"'"]"'"`
 "let vimsyn_folding='af'	   " Vim script
 "let xml_syntax_folding=1	  " XML
 
-filetype plugin on
 set guifont=Source\ Code\ Pro\ 10
 
 " Tab navigation like Firefox.
@@ -234,9 +232,10 @@ let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
 
 "[rainbow]
 let g:rainbow_active = 1
+"           \   'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
+"           \   'ctermfgs': ['lightblue', 'lightyellow', 'lightcyan', 'lightmagenta'],
+"           \           'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick', 'darkorchid3'],
 let g:rainbow_conf = {
-            \   'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
-            \   'ctermfgs': ['lightblue', 'lightyellow', 'lightcyan', 'lightmagenta'],
             \   'operators': '_,_',
             \   'parentheses': ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'],
             \   'separately': {
@@ -245,7 +244,6 @@ let g:rainbow_conf = {
             \           'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/'],
             \       },
             \       'lisp': {
-            \           'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick', 'darkorchid3'],
             \       },
             \       'vim': {
             \           'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/', 'start=/{/ end=/}/ fold', 'start=/(/ end=/)/ containedin=vimFuncBody', 'start=/\[/ end=/\]/ containedin=vimFuncBody', 'start=/{/ end=/}/ fold containedin=vimFuncBody'],
