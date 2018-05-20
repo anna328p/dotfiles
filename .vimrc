@@ -55,7 +55,6 @@ Plug 'ctrlpvim/ctrlp.vim' " Incremental search
 Plug 'felikZ/ctrlp-py-matcher' "the normal one doesnt prioritize exact matches so we need the py addition
 Plug 'godlygeek/tabular'
 Plug 'isaacmorneau/vim-update-daily' "update vim plugins once a day
-Plug 'isaacmorneau/vim-update-daily' "update vim plugins once a day
 Plug 'jez/vim-superman'
 Plug 'jistr/vim-nerdtree-tabs'
 Plug 'luochen1990/rainbow' "rainbow highlight brackets
@@ -70,11 +69,20 @@ Plug 'sebastianmarkow/deoplete-rust' "better rust support
 Plug 'sheerun/vim-polyglot'
 Plug 'shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' } "the main autocomple engine
 Plug 'shougo/neoinclude.vim' "also check completion in includes
+Plug 'shougo/neco-syntax'
+Plug 'shougo/neco-vim'
+Plug 'fszymanski/deoplete-emoji'
+Plug 'SevereOverfl0w/deoplete-github'
+Plug 'wellle/tmux-complete.vim'
+Plug 'zchee/deoplete-zsh'
+Plug 'uplus/deoplete-solargraph'
+Plug 'shougo/neco-vim'
 Plug 'slim-template/vim-slim'
 Plug 'tpope/vim-bundler'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rails'
+Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-surround'
@@ -83,13 +91,14 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-ruby/vim-ruby'
 Plug 'vim-scripts/HTML-AutoCloseTag'
 Plug 'vim-scripts/a.vim'
-Plug 'xolox/vim-easytags'
 Plug 'xolox/vim-misc'
+Plug 'xolox/vim-easytags'
 Plug 'zchee/deoplete-clang' "better clang support
 "dont add discord if its not installed(like on servers)
 let s:has_discord = 0
 silent !which discord || which discord-canary
 if(!v:shell_error)
+  let s:has_discord = 1
   Plug 'aurieh/discord.nvim', { 'do': ':UpdateRemotePlugins'}
 endif
 call plug#end()
@@ -221,6 +230,13 @@ let g:deoplete#buffer#require_same_filetype = 0
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 "dont litter your windows
 autocmd CompleteDone * pclose
+let g:deoplete#sources = {}
+let g:deoplete#sources.gitcommit=['github']
+
+let g:deoplete#keyword_patterns = {}
+let g:deoplete#keyword_patterns.gitcommit = '.+'
+
+"call deoplete#util#set_pattern(g:deoplete#omni#input_patterns, 'gitcommit', [g:deoplete#keyword_patterns.gitcommit])
 
 "[ctrlp.vim]
 let g:ctrlp_working_path_mode = 'ra'
@@ -254,3 +270,6 @@ let g:rainbow_conf = {
             \       'css': 0,
             \   }
 	    \}
+"python3 from powerline.vim import setup as powerline_setup
+"python3 powerline_setup()
+"python3 del powerline_setup

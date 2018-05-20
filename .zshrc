@@ -8,6 +8,8 @@ export MAKEFLAGS="-j$(expr $(nproc) \+ 1)"
 export CDPATH=.:$HOME:$CDPATH
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=11'
 
+zmodload -a zsh/zpty zpty
+
 eval `dircolors ~/.dircolors`
 [ $DISPLAY ] && xrdb ~/.Xresources
 
@@ -24,6 +26,11 @@ alias install='pacman -S'
 alias ls='/opt/coreutils/bin/ls'
 alias power='for i in $(upower -e); do echo $i &&upower -i $i; done'
 alias kexec-reboot='sudo kexec -l /boot/vmlinuz-linux-zen --initrd=/boot/initramfs-linux-zen.img --reuse-cmdline; sudo systemctl kexec'
+alias :wq='exit'
+alias :tabopen='tmux new-window'
+alias :e='vim'
+alias :w='sync'
+alias :q='exit'
 
 shove () {
   scp $* image-upload@dk0.us:/var/www/files/uploads
@@ -97,3 +104,7 @@ bindkey "\e\e" sudo-command-line
 [ -f /usr/share/doc/pkgfile/command-not-found.zsh ] && source /usr/share/doc/pkgfile/command-not-found.zsh
 source ~/.local/share/icons-in-terminal/icons_bash.sh
 #source /storage/opt/intel/system_studio_2018/compilers_and_libraries_2018.2.199/linux/bin/iccvars.sh intel64
+#
+#powerline-daemon -q
+#[ -e /usr/lib/python3.6/site-packages/powerline/bindings/zsh/powerline.zsh ] && . /usr/lib/python3.6/site-packages/powerline/bindings/zsh/powerline.zsh
+#[ -e ~/.local/lib64/python3.5/site-packages/powerline/bindings/zsh/powerline.zsh ] && . ~/.local/lib64/python3.5/site-packages/powerline/bindings/zsh/powerline.zsh
