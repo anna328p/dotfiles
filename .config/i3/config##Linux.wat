@@ -225,20 +225,20 @@ bindsym $mod+Shift+minus move scratchpad
 bindsym $mod+minus scratchpad show
 bindsym Print exec scre
 
-bar {
-   i3bar_command i3bar -t
-   id bar-1
-   status_command i3status
-   #status_command python ~/.local/lib64/python3.5/site-packages/powerline/bindings/i3/powerline-i3.py
-   position top
-#   output DP-3
-  # 	font pango:xos4 Terminus 10
-   font pango:TeraFont 16px
-   colors {
-      background #2f343f
-   }
-   separator_symbol ""
-}
+#bar {
+#   i3bar_command i3bar -t
+#   id bar-1
+#   status_command i3status
+#   #status_command python ~/.local/lib64/python3.5/site-packages/powerline/bindings/i3/powerline-i3.py
+#   position top
+##   output DP-3
+#  # 	font pango:xos4 Terminus 10
+#   font pango:TeraFont 16px
+#   colors {
+#      background #2f343f
+#   }
+#   separator_symbol ""
+#}
 
 for_window [class="Gbdfed"] floating enable
 
