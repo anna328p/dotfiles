@@ -32,16 +32,34 @@ alias :e='vim'
 alias :w='sync'
 alias :q='exit'
 
-shove () {
-  scp $* image-upload@dk0.us:/var/www/files/uploads
-  for i in $*; do
-    echo "http://u.dk0.us/$(basename $i)"
-  done
-}
 
 mkcd () {
   mkdir -p $*
   cd $*
+}
+
+urlencode() {
+  local string="${1}"
+  local strlen=${#string}
+  local encoded=""
+  local pos c o
+
+  for (( pos=0 ; pos<strlen ; pos++ )); do
+     c=${string:$pos:1}
+     case "$c" in
+        [-_.~a-zA-Z0-9] ) o="${c}" ;;
+        * )               printf -v o '%%%02x' "'$c"
+     esac
+     encoded+="${o}"
+  done
+  echo -n "${encoded}"
+}
+
+shove () {
+  scp $* image-upload@dk0.us:/var/www/files/uploads
+  for i in $*; do
+    echo "http://u.dk0.us/"$(urlencode "$(basename $i)")
+  done
 }
 
 #-----------------------------------------------------------------------------#
