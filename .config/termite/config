@@ -1,6 +1,6 @@
 [options]
 #font = xos4 Terminus 16px
-font = Source Code Pro for Powerline 12px
+font = Source Code Pro 12px
 #font = TeraFont Medium 12
 scrollback_lines = 10000000
 

@@ -3,7 +3,8 @@ source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 # export ARCHFLAGS="-arch x86_64"
 export MANPATH="/usr/local/man:$MANPATH"
 export DEFAULT_USER=$(whoami)
-export EDITOR=$(which vim)
+export EDITOR=$(which nvim)
+export VISUAL=$(which nvim)
 export MAKEFLAGS="-j$(expr $(nproc) \+ 1)"
 export CDPATH=.:$HOME:$CDPATH
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=11'
@@ -17,7 +18,7 @@ export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:/home/dmitry/.gem/ruby/2.5
 
 hash -d w='/home/dmitry/work'
 
-[ -e /etc/pacman.conf ] && alias pacman='pacaur'
+[ -e /etc/pacman.conf ] && alias pacman='pikaur'
 [ -d /etc/portage ] && alias pacman='sudo pacman'
 alias vim='nvim'
 alias open='xdg-open'
