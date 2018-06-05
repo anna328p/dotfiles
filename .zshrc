@@ -23,7 +23,7 @@ alias vim='nvim'
 alias open='xdg-open'
 alias syu='pacman -Syu'
 alias install='pacman -S'
-alias ls='/opt/coreutils/bin/ls'
+[ $(cat /etc/hostname) = wat ] && alias ls='/opt/coreutils/bin/ls'
 alias power='for i in $(upower -e); do echo $i &&upower -i $i; done'
 alias kexec-reboot='sudo kexec -l /boot/vmlinuz-linux-zen --initrd=/boot/initramfs-linux-zen.img --reuse-cmdline; sudo systemctl kexec'
 alias :wq='exit'
@@ -32,6 +32,7 @@ alias :e='vim'
 alias :w='sync'
 alias :q='exit'
 
+export GPG_TTY=$(tty)
 
 mkcd () {
   mkdir -p $*
