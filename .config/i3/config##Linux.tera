@@ -45,7 +45,8 @@ floating_modifier $mod
 # start a launcher
 mode "launcher" {
 	bindsym t exec termite; mode "default"
-	bindsym g exec gpmdp; mode "default"
+	bindsym g exec gmpc; mode "default"
+	bindsym c exec gnome-control-center; mode "default"
 	bindsym f exec firefox-developer-edition -p; mode "default"
 	bindsym s exec steam-native; mode "default"
 	bindsym l exec lock.sh; mode "default"
