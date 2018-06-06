@@ -183,8 +183,8 @@ exec_always --no-startup-id gnome-power-manager
 
 exec --no-startup-id nitrogen --restore
 exec --no-startup-id nm-applet
-exec --no-startup-id polybar main
-#exec --no-startup-id compton -bCG -r0 -l0 -t0 -o0
+exec_always --no-startup-id polybar main
+exec --no-startup-id compton
 exec --no-startup-id pkill nautilus
 exec "setxkbmap -layout us,ru"
 exec "setxkbmap -option 'grp:alt_shift_toggle'"
