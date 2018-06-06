@@ -35,7 +35,7 @@ font-0 = Source Code Pro:style=Regular:size=9;1
 
 modules-left = i3
 modules-center =
-modules-right = date cpu memory cputemp filesystem wlan eth battery1 battery2 volume xkeyboard
+modules-right = date cpu memory temperature filesystem wlan battery volume xkeyboard
 
 tray-position = right
 tray-padding = 2
@@ -149,11 +149,12 @@ label-connected-foreground = ${colors.foreground}
 label-connected = %signal%% %essid% %downspeed%
 format-connected-foreground = ${colors.foreground-alt}
 
-;format-disconnected = wifi <label-disconnected>
-format-disconnected =
+format-disconnected = wifi <label-disconnected>
+format-disconnected-underline =
 ;format-disconnected-underline = ${self.format-connected-underline}
-;label-disconnected = [DOWN]
-;label-disconnected-foreground = ${colors.foreground-alt}
+label-disconnected = down
+label-disconnected-foreground = ${colors.foreground-alt}
+format-disconnected-foreground = ${colors.foreground-alt}
 
 ramp-signal-0 = [0]
 ramp-signal-1 = [1]
@@ -162,17 +163,7 @@ ramp-signal-3 = [3]
 ramp-signal-4 = [4]
 ramp-signal-foreground = ${colors.foreground-alt}
 
-[module/eth]
-type = internal/network
-interface = eno1
-interval = 3.0
-
-format-connected-underline = #388E3C
-format-connected-prefix = "eth "
-format-connected-prefix-foreground = ${colors.foreground-alt}
-label-connected = %local_ip%
-
-format-disconnected =
+;format-disconnected =
 ;format-disconnected = <label-disconnected>
 ;format-disconnected-underline = ${self.format-connected-underline}
 ;label-disconnected = %ifname% disconnected
@@ -235,7 +226,7 @@ bar-volume-empty = ─
 bar-volume-empty-font = 2
 bar-volume-empty-foreground = ${colors.foreground-alt}
 
-[module/battery1]
+[module/battery]
 type = internal/battery
 battery = BAT0
 adapter = AC
@@ -275,7 +266,7 @@ animation-charging-framerate = 1000
 [module/temperature]
 type = internal/temperature
 #thermal-zone = 0
-hwmon-path = /sys/devices/platform/coretemp.0/hwmon/hwmon1/temp1_input
+hwmon-path = /sys/devices/platform/coretemp.0/hwmon/hwmon2/temp1_input
 warn-temperature = 60
 
 format = <label>
