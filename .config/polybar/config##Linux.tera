@@ -8,12 +8,10 @@
 ;=====================================================
 
 [colors]
-;background = ${xrdb:color0:#222}
 background = #2f343f
 background-alt = #444
-;foreground = ${xrdb:color7:#222}
 foreground = #dfdfdf
-foreground-alt = #9b9b9b
+foreground-alt = #8a8a8a
 primary = #ffb52a
 secondary = #e60053
 alert = #bd2c40
@@ -21,10 +19,7 @@ alert = #bd2c40
 [bar/main]
 monitor = ${env:MONITOR:DVI-I-1}
 width = 100%
-height = 18
-;offset-x = 1%
-;offset-y = 1%
-;radius = 6.0
+height = 24
 fixed-center = false
 
 background = ${colors.background}
@@ -33,16 +28,17 @@ foreground = ${colors.foreground}
 line-size = 3
 line-color = #f00
 
-border-size = 1
-border-color = #ff353a48
+border-size = 10
+border-bottom-size = 0
+border-color = #00000000
 
 padding-left = 0
 padding-right = 2
 
 module-margin-left = 1
-module-margin-right = 1
+module-margin-right = 2
 
-font-0 = TeraFont2:style=Medium:size=12;1
+font-0 = Source Code Pro:style=Regular:size=9;1
 
 modules-left = i3
 modules-center =
@@ -229,22 +225,24 @@ format-volume-underline = #3F51B5
 
 [module/temperature]
 type = internal/temperature
-thermal-zone = 0
+#thermal-zone = 0
+hwmon-path = /sys/devices/platform/coretemp.0/hwmon/hwmon1/temp1_input
 warn-temperature = 60
 
-format = <ramp> <label>
-format-underline = #2E7D32
-format-warn = <ramp> <label-warn>
+format = <label>
+format-warn = <label-warn>
 format-warn-underline = ${self.format-underline}
 
 label = %temperature%
 label-warn = %temperature%
-label-warn-foreground = ${colors.secondary}
+label-warn-foreground = #F9A825
 
-ramp-0 = [0]
-ramp-1 = [1]
-ramp-2 = [2]
-ramp-foreground = ${colors.foreground-alt}
+format-underline = #2E7D32
+format-foreground = ${colors.foreground}
+format-prefix = "temp "
+format-warn-prefix = "temp "
+format-prefix-foreground = ${colors.foreground-alt}
+format-warn-prefix-foreground = ${colors.foreground-alt}
 
 [settings]
 screenchange-reload = true
