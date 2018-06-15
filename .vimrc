@@ -26,6 +26,7 @@ set smartcase
 set splitbelow
 set splitright
 set tabstop=4
+"set termguicolors
 set title
 set ttimeoutlen=50
 set undofile
@@ -57,6 +58,7 @@ Plug 'godlygeek/tabular'
 Plug 'isaacmorneau/vim-update-daily' "update vim plugins once a day
 Plug 'jez/vim-superman'
 Plug 'jistr/vim-nerdtree-tabs'
+Plug 'justinmk/vim-sneak'
 Plug 'luochen1990/rainbow' "rainbow highlight brackets
 Plug 'majutsushi/tagbar'
 Plug 'mhinz/vim-startify'
@@ -79,6 +81,7 @@ Plug 'uplus/deoplete-solargraph'
 Plug 'shougo/neco-vim'
 Plug 'slim-template/vim-slim'
 Plug 'tpope/vim-bundler'
+Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rails'
@@ -99,7 +102,7 @@ let s:has_discord = 0
 silent !which discord || which discord-canary
 if(!v:shell_error)
   let s:has_discord = 1
-  Plug 'aurieh/discord.nvim', { 'do': ':UpdateRemotePlugins'}
+"  Plug 'aurieh/discord.nvim', { 'do': ':UpdateRemotePlugins'}
 endif
 call plug#end()
 
