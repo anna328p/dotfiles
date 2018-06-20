@@ -1,5 +1,5 @@
 [options]
-font = Source Code Pro 12px
+font = Source Code Pro Regular 12px
 scrollback_lines = 10000000
 
 # Solarized dark color scheme
