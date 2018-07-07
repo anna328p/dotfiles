@@ -3,7 +3,8 @@ source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 # export ARCHFLAGS="-arch x86_64"
 export MANPATH="/usr/local/man:$MANPATH"
 export DEFAULT_USER=$(whoami)
-export EDITOR=$(which vim)
+export EDITOR=$(which nvim)
+export VISUAL=$(which nvim)
 export MAKEFLAGS="-j$(expr $(nproc) \+ 1)"
 export CDPATH=.:$HOME:$CDPATH
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=11'
@@ -17,13 +18,13 @@ export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:/home/dmitry/.gem/ruby/2.5
 
 hash -d w='/home/dmitry/work'
 
-[ -e /etc/pacman.conf ] && alias pacman='pacaur'
+[ -e /etc/pacman.conf ] && alias pacman='pikaur'
 [ -d /etc/portage ] && alias pacman='sudo pacman'
 alias vim='nvim'
 alias open='xdg-open'
 alias syu='pacman -Syu'
 alias install='pacman -S'
-alias ls='/opt/coreutils/bin/ls'
+[  $(cat /etc/hostname) = wat  -o  $(cat /etc/hostname) = watbook  ] && alias ls='/opt/coreutils/bin/ls'
 alias power='for i in $(upower -e); do echo $i &&upower -i $i; done'
 alias kexec-reboot='sudo kexec -l /boot/vmlinuz-linux-zen --initrd=/boot/initramfs-linux-zen.img --reuse-cmdline; sudo systemctl kexec'
 alias :wq='exit'
@@ -32,16 +33,35 @@ alias :e='vim'
 alias :w='sync'
 alias :q='exit'
 
-shove () {
-  scp $* image-upload@dk0.us:/var/www/files/uploads
-  for i in $*; do
-    echo "http://u.dk0.us/$(basename $i)"
-  done
-}
+export GPG_TTY=$(tty)
 
 mkcd () {
   mkdir -p $*
   cd $*
+}
+
+urlencode() {
+  local string="${1}"
+  local strlen=${#string}
+  local encoded=""
+  local pos c o
+
+  for (( pos=0 ; pos<strlen ; pos++ )); do
+     c=${string:$pos:1}
+     case "$c" in
+        [-_.~a-zA-Z0-9] ) o="${c}" ;;
+        * )               printf -v o '%%%02x' "'$c"
+     esac
+     encoded+="${o}"
+  done
+  echo -n "${encoded}"
+}
+
+shove () {
+  scp $* image-upload@dk0.us:/var/www/files/uploads
+  for i in $*; do
+    echo "http://u.dk0.us/"$(urlencode "$(basename $i)")
+  done
 }
 
 #-----------------------------------------------------------------------------#

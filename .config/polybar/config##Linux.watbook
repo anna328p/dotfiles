@@ -1,11 +1,4 @@
-;=====================================================
-;
-;   To learn more about how to configure Polybar
-;   go to https://github.com/jaagr/polybar
-;
-;   The README contains alot of information
-;
-;=====================================================
+; dkudriavtsev/s polybar config
 
 [colors]
 background = #2f343f
@@ -17,7 +10,7 @@ secondary = #e60053
 alert = #bd2c40
 
 [bar/main]
-monitor = ${env:MONITOR:DVI-I-1}
+monitor = ${env:MONITOR:LVDS-1}
 width = 100%
 height = 24
 fixed-center = false
@@ -42,56 +35,39 @@ font-0 = Source Code Pro:style=Regular:size=9;1
 
 modules-left = i3
 modules-center =
-modules-right = date cpu memory temperature filesystem volume xkeyboard
+modules-right = date cpu memory temperature filesystem wlan battery volume xkeyboard
+
 tray-position = right
 tray-padding = 2
-;tray-transparent = true
-;tray-background = #0063ff
 
-;wm-restack = bspwm
 wm-restack = i3
-
-;override-redirect = true
-
-;scroll-up = bspwm-desknext
-;scroll-down = bspwm-deskprev
 
 scroll-up = i3wm-wsnext
 scroll-down = i3wm-wsprev
-
-[module/xwindow]
-type = internal/xwindow
-label = %title:0:30:...%
 
 [module/xkeyboard]
 type = internal/xkeyboard
 blacklist-0 = num lock
 
-;format-prefix = " "
-;format-prefix-foreground = ${colors.foreground-alt}
-;format-prefix-underline = ${colors.secondary}
-
 label-layout = %layout%
-label-layout-underline = #673AB7
+label-layout-underline = #4527A0
 
 label-indicator-padding = 2
 label-indicator-margin = 1
 label-indicator-background = ${colors.secondary}
-label-indicator-underline = ${colors.secondary}
+label-indicator-underline = #4527A0
 
 [module/filesystem]
 type = internal/fs
-interval = 5
+interval = 25
 
 mount-0 = /
-mount-1 = /home
-mount-2 = /media/storage
-mount-3 = /media/backup
 
-label-mounted = %{F#9b9b9b}%mountpoint%%{F-} %percentage_used%%
+label-mounted = %{F#8a8a8a}%mountpoint%%{F-} %percentage_used%%
 label-unmounted = %mountpoint% not mounted
 label-unmounted-foreground = ${colors.foreground-alt}
-format-mounted-underline = #1565C0
+
+format-mounted-underline = #689F38
 
 [module/bspwm]
 type = internal/bspwm
@@ -151,7 +127,7 @@ type = internal/cpu
 interval = 2
 format-prefix = "cpu "
 format-prefix-foreground = ${colors.foreground-alt}
-format-underline = #E65100
+format-underline = #D84315
 label = %percentage%%
 
 [module/memory]
@@ -159,20 +135,35 @@ type = internal/memory
 interval = 2
 format-prefix = "ram "
 format-prefix-foreground = ${colors.foreground-alt}
-format-underline = #F57F17
+format-underline = #EF6C00
 label = %percentage_used%%
 
-[module/eth]
+[module/wlan]
 type = internal/network
-interface = eno1
+interface = wlp3s0
 interval = 3.0
 
-format-connected-underline = #55aa55
-format-connected-prefix = "ip "
-format-connected-prefix-foreground = ${colors.foreground-alt}
-label-connected = %local_ip%
+format-connected = wifi <label-connected>
+format-connected-underline = #388E3C
+label-connected-foreground = ${colors.foreground}
+label-connected = %signal%% %essid% %downspeed%
+format-connected-foreground = ${colors.foreground-alt}
 
-format-disconnected =
+format-disconnected = wifi <label-disconnected>
+format-disconnected-underline =
+;format-disconnected-underline = ${self.format-connected-underline}
+label-disconnected = down
+label-disconnected-foreground = ${colors.foreground-alt}
+format-disconnected-foreground = ${colors.foreground-alt}
+
+ramp-signal-0 = [0]
+ramp-signal-1 = [1]
+ramp-signal-2 = [2]
+ramp-signal-3 = [3]
+ramp-signal-4 = [4]
+ramp-signal-foreground = ${colors.foreground-alt}
+
+;format-disconnected =
 ;format-disconnected = <label-disconnected>
 ;format-disconnected-underline = ${self.format-connected-underline}
 ;label-disconnected = %ifname% disconnected
@@ -182,35 +173,48 @@ format-disconnected =
 type = internal/date
 interval = 1
 
-date =" %Y-%m-%d"
-date-alt = " %Y-%m-%d"
+date =
+date-alt = "%Y-%m-%d "
 
-time = %H:%M:%S
+time = %H:%M
 time-alt = %H:%M:%S
 
-format-prefix = date
-format-prefix-foreground = ${colors.foreground-alt}
-format-underline = #B71C1C
+;format-prefix = date
+;format-prefix = ""
+format = <label>
+;format-prefix-foreground = ${colors.foreground-alt}
+format-underline = #C62828
 
-label = %date% %time%
+label = %date%%time%
 
 [module/volume]
 type = internal/volume
 
+#format-volume = <label-volume>
 format-volume = <label-volume> <bar-volume>
-label-volume = "volume "
-label-volume-foreground = ${colors.foreground-alt}
+format-volume-prefix = "%{F#8a8a8a}volume%{F-} "
+;label-volume = volume
+;label-volume = %percentage%%
+label-volume =
+label-volume-foreground = ${colors.foreground}
 
-format-muted-prefix = "(M) "
+format-volume-underline = #303F9F
+
+format-muted-prefix = "muted "
 format-muted-foreground = ${colors.foreground-alt}
-label-muted = sound muted
+label-muted = %percentage%%
 
 bar-volume-width = 10
-bar-volume-foreground-0 = #55aa55
-bar-volume-foreground-1 = #55aa55
-bar-volume-foreground-2 = #55aa55
-bar-volume-foreground-3 = #55aa55
-bar-volume-foreground-4 = #55aa55
+bar-volume-foreground-0 = #303F9F
+bar-volume-foreground-1 = #303F9F
+bar-volume-foreground-2 = #303F9F
+bar-volume-foreground-3 = #303F9F
+bar-volume-foreground-4 = #303F9F
+; bar-volume-foreground-0 = #55aa55
+; bar-volume-foreground-1 = #55aa55
+; bar-volume-foreground-2 = #55aa55
+; bar-volume-foreground-3 = #55aa55
+; bar-volume-foreground-4 = #55aa55
 bar-volume-foreground-5 = #f5a70a
 bar-volume-foreground-6 = #ff5555
 bar-volume-gradient = false
@@ -220,13 +224,49 @@ bar-volume-fill = ─
 bar-volume-fill-font = 2
 bar-volume-empty = ─
 bar-volume-empty-font = 2
-bar-volume-empty-foreground = ${colors.foreground}
-format-volume-underline = #3F51B5
+bar-volume-empty-foreground = ${colors.foreground-alt}
+
+[module/battery]
+type = internal/battery
+battery = BAT0
+adapter = AC
+full-at = 98
+
+interval = 2
+
+label-charging = %percentage%%
+label-discharging = %time% %consumption%
+label-full = 100%
+
+format-charging-prefix = "bat "
+format-charging-prefix-foreground = ${colors.foreground-alt}
+format-charging = <animation-charging> <label-charging>
+format-charging-underline = #01579B
+
+format-discharging-prefix = ${self.format-charging-prefix}
+format-discharging = [D] <label-discharging>
+format-discharging-prefix-foreground = ${colors.foreground-alt}
+format-discharging-underline = ${self.format-charging-underline}
+
+format-full-prefix = ${self.format-charging-prefix}
+format-full = [F]
+format-full-prefix-foreground = ${colors.foreground-alt}
+format-full-underline = ${self.format-charging-underline}
+
+ramp-capacity-0 = [0]
+ramp-capacity-1 = [1]
+ramp-capacity-2 = [2]
+ramp-capacity-foreground = ${colors.foreground-alt}
+
+animation-charging-0 = [%{F#990000}C%{F-}]
+animation-charging-1 = [C]
+animation-charging-foreground = ${colors.foreground}
+animation-charging-framerate = 1000
 
 [module/temperature]
 type = internal/temperature
 #thermal-zone = 0
-hwmon-path = /sys/devices/platform/coretemp.0/hwmon/hwmon1/temp1_input
+hwmon-path = /sys/devices/platform/coretemp.0/hwmon/hwmon2/temp1_input
 warn-temperature = 60
 
 format = <label>
@@ -235,14 +275,13 @@ format-warn-underline = ${self.format-underline}
 
 label = %temperature%
 label-warn = %temperature%
-label-warn-foreground = #F9A825
+label-warn-foreground = ${self.format-underline}
 
-format-underline = #2E7D32
+format-underline = #F9A825
 format-foreground = ${colors.foreground}
 format-prefix = "temp "
 format-warn-prefix = "temp "
 format-prefix-foreground = ${colors.foreground-alt}
-format-warn-prefix-foreground = ${colors.foreground-alt}
 
 [settings]
 screenchange-reload = true
