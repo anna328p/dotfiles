@@ -1,0 +1,6 @@
+#!/bin/bash
+file=/tmp/$RANDOM.txt
+dest="http://u.dk0.us/"$(basename $file)
+cat > $file
+scp -q $file image-upload@dk0.us:/var/www/files/uploads
+echo $dest | tee /dev/stderr | xclip -sel clip
