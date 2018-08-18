@@ -186,8 +186,8 @@ exec --no-startup-id nm-applet
 exec_always --no-startup-id polybar main
 exec --no-startup-id compton
 exec --no-startup-id pkill nautilus
-exec "setxkbmap -layout us,ru"
-exec "setxkbmap -option 'grp:alt_shift_toggle'"
+exec --no-startup-id "setxkbmap -layout us,ru"
+exec --no-startup-id "setxkbmap -option 'grp:alt_shift_toggle'"
 bindsym $mod+Ctrl+l exec /home/dmitry/bin/lock.sh
 
 #new_window normal 0 px
@@ -221,6 +221,7 @@ bindsym XF86Sleep exec /home/dmitry/bin/lock.sh; exec systemctl suspend
 bindsym $mod+p exec gnome-control-center displays
 bindsym XF86ScreenSaver exec /home/dmitry/bin/lock.sh
 bindsym XF86WLAN  exec gnome-control-center wifi
+bindsym Caps_Lock exec --no-startup-id xdotool key Escape
 
 # Make the currently focused window a scratchpad
 bindsym $mod+Shift+minus move scratchpad
