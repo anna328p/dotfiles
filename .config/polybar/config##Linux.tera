@@ -199,7 +199,7 @@ type = internal/volume
 
 format-volume = <label-volume> <bar-volume>
 label-volume = "volume "
-label-volume-foreground = ${root.foreground}
+label-volume-foreground = ${colors.foreground-alt}
 
 format-muted-prefix = "(M) "
 format-muted-foreground = ${colors.foreground-alt}
@@ -220,7 +220,7 @@ bar-volume-fill = ─
 bar-volume-fill-font = 2
 bar-volume-empty = ─
 bar-volume-empty-font = 2
-bar-volume-empty-foreground = ${colors.foreground-alt}
+bar-volume-empty-foreground = ${colors.foreground}
 format-volume-underline = #3F51B5
 
 [module/temperature]
