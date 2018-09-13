@@ -8,6 +8,7 @@ export VISUAL=$(which nvim)
 export MAKEFLAGS="-j$(expr $(nproc) \+ 1)"
 export CDPATH=.:$HOME:$CDPATH
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=11'
+export BAT_THEME="TwoDark"
 
 zmodload -a zsh/zpty zpty
 
