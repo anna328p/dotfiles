@@ -8,6 +8,7 @@ export VISUAL=$(which nvim)
 export MAKEFLAGS="-j$(expr $(nproc) \+ 1)"
 export CDPATH=.:$HOME:$CDPATH
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=11'
+export BAT_THEME="TwoDark"
 
 zmodload -a zsh/zpty zpty
 
@@ -24,7 +25,7 @@ alias vim='nvim'
 alias open='xdg-open'
 alias syu='pacman -Syu'
 alias install='pacman -S'
-[  $(cat /etc/hostname) = wat  -o  $(cat /etc/hostname) = watbook  -o  $(cat /etc/hostname) = tera ] && alias ls='/opt/coreutils/bin/ls'
+[  $(cat /etc/hostname) = wat  -o  $(cat /etc/hostname) = watbook  ] && [ -e /opt/coreutils/bin/ls ] && [ -e /bin/bash ] && alias ls='/opt/coreutils/bin/ls'
 alias power='for i in $(upower -e); do echo $i &&upower -i $i; done'
 alias kexec-reboot='sudo kexec -l /boot/vmlinuz-linux-zen --initrd=/boot/initramfs-linux-zen.img --reuse-cmdline; sudo systemctl kexec'
 alias :wq='exit'

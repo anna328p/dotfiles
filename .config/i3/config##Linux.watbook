@@ -188,6 +188,7 @@ exec --no-startup-id compton
 exec --no-startup-id pkill nautilus
 exec --no-startup-id "setxkbmap -layout us,ru"
 exec --no-startup-id "setxkbmap -option 'grp:alt_shift_toggle'"
+exec --no-startup-id "xmodmap ~/.config/xmodmap/caps-to-esc"
 bindsym $mod+Ctrl+l exec /home/dmitry/bin/lock.sh
 
 #new_window normal 0 px
