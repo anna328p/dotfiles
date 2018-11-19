@@ -20,15 +20,48 @@ font pango:Source Code Pro 20px
 
 # colors
 
-# class					border  backgr. text    indicator child_border
-client.focused			#353a48 #2f343f #ffffff #2e9ef4   #353a48
-#client.focused			#2f343f #2f343f #ffffff #2e9ef4   #353a48
-client.focused_inactive	#3c4550 #383b48 #ffffff #484e50   #5f676a
-client.unfocused		#333333 #222222 #888888 #292d2e   #222222
-client.urgent			#2f343a #900000 #ffffff #900000   #900000
-client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
+set $bg #2f343f
+set $border #353a48
+set $text #ffffff
+set $ibg #383b48
+set $iborder #3c4550
+set $ubg #222222
+set $uborder #333333
+set $utext #888888
+set $urgent #900000
 
-client.background       #ffffff
+set $bartext #dfdfdf
+
+# class					border   backgr.  text   indicator child_border
+client.focused			$border  $bg      $text  #2e9ef4   $border
+client.focused_inactive	$iborder $ibg     $text  #484e50   #5f676a
+client.unfocused		$uborder $ubg     $utext #292d2e   $ubg
+client.urgent			$border  $urgent  $text  $urgent   $urgent
+client.placeholder      #000000  #0c0c0c  $text  #000000   #0c0c0c
+client.background       $text
+
+#bar {
+#	i3bar_command i3bar -t
+# 	id bar-1
+# 	status_command i3blocks
+# 	position top
+# 	output DVI-I-1
+# #	font pango:Roboto 11
+## 	font pango:xos4 Terminus 13
+#	colors {
+#		background $bg
+#		statusline $bartext
+#		separator #777777
+#
+#		focused_workspace #ffb52a #444444 $bartext
+#		active_workspace #ffb52a #444444 $bartext
+#		inactive_workspace $bg $bg $bartext
+#		urgent_workspace $border $urgent $bartext
+#		binding_mode #ffb52a #ffb52a #000000
+#	}
+#	font pango:Source Code Pro 10
+#	separator_symbol "  "
+#}
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -126,7 +159,7 @@ bindsym $mod+a focus parent
 # monitor to workspace binding
 workspace 1 output DVI-I-1
 workspace 2 output DVI-D-0
-workspace 3 output HDMI-1-2
+workspace 3 output HDMI-1-3
 
 # switch to workspace
 bindsym $mod+1 workspace 1
@@ -194,7 +227,7 @@ exec xrandr --output HDMI-1-2 --left-of DVI-I-1
 
 exec --no-startup-id nitrogen --restore
 exec --no-startup-id nm-applet
-exec_always --no-startup-id polybar main
+exec --no-startup-id polybar main
 exec --no-startup-id compton
 exec --no-startup-id pkill nautilus
 exec "setxkbmap -layout us,ru"
@@ -229,18 +262,8 @@ bindsym $mod+Shift+minus move scratchpad
 bindsym $mod+minus scratchpad show
 bindsym Print exec /home/dmitry/bin/scre
 
-# bar {
-# #	i3bar_command i3bar -t
-# 	id bar-1
-# 	status_command i3status
-# 	position top
-# 	output DVI-I-1
-# #	font pango:Roboto 11
-# 	font pango:xos4 Terminus 13
-# }
-
 for_window [class="Gbdfed"] floating enable
 
 for_window [class="Termite" ] border normal 0
 for_window [class="URxvt"   ] border normal 0
-for_window [class=".*"      ] title_format "<span font='Source Code Pro 12px'>  > %title</span>"
+for_window [class=".*"      ] title_format "<span font='Source Code Pro 12px'> > %title</span>"

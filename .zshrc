@@ -101,6 +101,10 @@ shove () {
   done
 }
 
+rain () {
+  curl -s https://isitraining.in/Sammamish | grep result | grep -oP '(?<=\>).+(?=\<)' --color=never
+}
+
 #-----------------------------------------------------------------------------#
 
 DIRSTACKFILE="$HOME/.cache/zsh/dirs"
