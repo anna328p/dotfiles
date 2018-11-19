@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 file=/tmp/$RANDOM.txt
 dest="http://u.dk0.us/"$(basename $file)
 cat > $file
