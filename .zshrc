@@ -24,7 +24,7 @@ alias vim='nvim'
 alias open='xdg-open'
 alias syu='pacman -Syu'
 alias install='pacman -S'
-[  $(cat /etc/hostname) = wat  -o  $(cat /etc/hostname) = watbook  ] && alias ls='/opt/coreutils/bin/ls'
+[  $(cat /etc/hostname) = wat  -o  $(cat /etc/hostname) = watbook  -o  $(cat /etc/hostname) = tera ] && alias ls='/opt/coreutils/bin/ls'
 alias power='for i in $(upower -e); do echo $i &&upower -i $i; done'
 alias kexec-reboot='sudo kexec -l /boot/vmlinuz-linux-zen --initrd=/boot/initramfs-linux-zen.img --reuse-cmdline; sudo systemctl kexec'
 alias :wq='exit'
@@ -62,6 +62,10 @@ shove () {
   for i in $*; do
     echo "http://u.dk0.us/"$(urlencode "$(basename $i)")
   done
+}
+
+rain () {
+  curl -s https://isitraining.in/Sammamish | grep result | grep -oP '(?<=\>).+(?=\<)' --color=never
 }
 
 #-----------------------------------------------------------------------------#
