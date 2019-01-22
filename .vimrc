@@ -55,7 +55,6 @@ Plug 'chrisbra/Colorizer' " Show hex code color
 Plug 'ctrlpvim/ctrlp.vim' " Incremental search
 Plug 'felikZ/ctrlp-py-matcher' "the normal one doesnt prioritize exact matches so we need the py addition
 Plug 'godlygeek/tabular'
-Plug 'isaacmorneau/vim-update-daily' "update vim plugins once a day
 Plug 'jez/vim-superman'
 Plug 'jistr/vim-nerdtree-tabs'
 Plug 'justinmk/vim-sneak'

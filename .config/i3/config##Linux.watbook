@@ -17,7 +17,7 @@ set $mod Mod4
 #font pango:Roboto 9
 #font pango:Roboto 14px
 #font pango:TeraFont2 16px
-font pango:Source Code Pro 20px
+font pango:Source Code Pro 12px
 
 # colors
 
@@ -57,12 +57,6 @@ mode "launcher" {
 	bindsym Escape mode "default"
 }
 bindsym $mod+Return mode "launcher"
-
-# scroll lock global menu
-mode "menu" {
-	bindsym Scroll_Lock exec xset -led 3; mode "default"
-}
-bindsym Scroll_Lock exec xset led 3; mode "menu"
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -188,7 +182,7 @@ exec --no-startup-id compton
 exec --no-startup-id pkill nautilus
 exec --no-startup-id "setxkbmap -layout us,ru"
 exec --no-startup-id "setxkbmap -option 'grp:alt_shift_toggle'"
-exec --no-startup-id "xmodmap ~/.config/xmodmap/caps-to-esc"
+exec --no-startup-id "xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'"
 bindsym $mod+Ctrl+l exec /home/dmitry/bin/lock.sh
 
 #new_window normal 0 px
@@ -202,9 +196,9 @@ gaps outer 0
 #smart_borders on
 
 # Pulse Audio controls
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5% #increase sound volume
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5% #decrease sound volume
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle # mute sound
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 1 +5% #increase sound volume
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 1 -5% #decrease sound volume
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 1 toggle # mute sound
 # Media player controls
 bindsym XF86AudioPlay exec playerctl play-pause
 #bindsym XF86AudioPause exec playerctl pause
@@ -250,4 +244,5 @@ for_window [class="Gbdfed"] floating enable
 
 for_window [class="Termite" ] border normal 0
 for_window [class="URxvt"   ] border normal 0
-for_window [class=".*"      ] title_format "<span font='Source Code Pro 12px'>  > %title</span>"
+#for_window [class=".*"      ] title_format "<span font='Source Code Pro 12px'>  > %title</span>"
+for_window [class=".*"      ] title_format "<span font='Source Code Pro 12px'> > %title</span>"
