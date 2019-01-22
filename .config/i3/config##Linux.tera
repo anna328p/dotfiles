@@ -84,7 +84,7 @@ mode "launcher" {
 	bindsym c exec gnome-control-center; mode "default"
 	bindsym f exec firefox-developer-edition -p; mode "default"
 	bindsym s exec steam-native; mode "default"
-	bindsym l exec lock.sh; mode "default"
+	bindsym l exec ~/bin/lock.sh; mode "default"
 	bindsym d exec termite -e 'pacman -Syu'; mode "default"
 	bindsym $mod+Return exec termite; mode "default"
 	bindsym Return mode "default"
@@ -98,9 +98,9 @@ bindsym $mod+F4 kill
 bindsym Mod1+F4 kill
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec /public/bin/rofi-dmenu.sh
-bindsym $mod+Shift+d exec /public/bin/rofi-applications.sh
-bindsym $mod+Tab exec /public/bin/rofi-windows.sh
+bindsym $mod+d exec ~/bin/rofi-dmenu.sh
+bindsym $mod+Shift+d exec ~/bin/rofi-applications.sh
+bindsym $mod+Tab exec ~/bin/rofi-windows.sh
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.

@@ -10,12 +10,18 @@ export CDPATH=.:$HOME:$CDPATH
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=11'
 export BAT_THEME="TwoDark"
 
+PERL5LIB="/home/dmitry/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
+PERL_LOCAL_LIB_ROOT="/home/dmitry/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+PERL_MB_OPT="--install_base \"/home/dmitry/perl5\""; export PERL_MB_OPT;
+PERL_MM_OPT="INSTALL_BASE=/home/dmitry/perl5"; export PERL_MM_OPT;
+
 zmodload -a zsh/zpty zpty
 
 eval `dircolors ~/.dircolors`
 [ $DISPLAY ] && xrdb ~/.Xresources
 
 export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:/home/dmitry/.gem/ruby/2.5.0/bin:$PATH
+export PATH="/home/dmitry/perl5/bin${PATH:+:${PATH}}"
 
 hash -d w='/home/dmitry/work'
 
@@ -105,6 +111,11 @@ rain () {
   curl -s https://isitraining.in/Sammamish | grep result | grep -oP '(?<=\>).+(?=\<)' --color=never
 }
 
+chromemem() {
+  echo -n "Chrome memory usage (GB): "
+  ps -e -o command,%mem | grep chrom | cut -d ' ' -f 3 | awk '{s+=$1} END {print s/100*16}'
+}
+
 #-----------------------------------------------------------------------------#
 
 DIRSTACKFILE="$HOME/.cache/zsh/dirs"
@@ -119,10 +130,6 @@ setopt clobber
 chpwd() {
 	  print -l $PWD ${(u)dirstack} >$DIRSTACKFILE
 }
-chromemem() {
-  echo -n "Chrome memory usage (GB): "
-  ps -e -o command,%mem | grep chrom | cut -d ' ' -f 3 | awk '{s+=$1} END {print s/100*16}'
-}
 
 DIRSTACKSIZE=20
 
@@ -134,13 +141,6 @@ setopt AUTO_PUSHD PUSHD_SILENT PUSHD_TO_HOME
 # This reverts the +/- operators.
 #setopt PUSHD_MINUS
 
-#-----------------------------------------------------------------------------#
-
-PATH="/home/dmitry/perl5/bin${PATH:+:${PATH}}"; export PATH;
-PERL5LIB="/home/dmitry/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
-PERL_LOCAL_LIB_ROOT="/home/dmitry/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
-PERL_MB_OPT="--install_base \"/home/dmitry/perl5\""; export PERL_MB_OPT;
-PERL_MM_OPT="INSTALL_BASE=/home/dmitry/perl5"; export PERL_MM_OPT;
 
 #-----------------------------------------------------------------------------#
 
