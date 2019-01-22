@@ -1,1 +1,1 @@
-/home/dmitry/.vimrc
+/public/home/recovery/.vimrc
