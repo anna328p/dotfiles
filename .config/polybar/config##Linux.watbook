@@ -267,7 +267,7 @@ bar-volume-empty-foreground = ${colors.foreground-alt}
 type = internal/battery
 battery = BAT0
 adapter = AC
-full-at = 99
+full-at = 97
 
 interval = 2
 
