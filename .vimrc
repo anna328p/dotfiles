@@ -26,7 +26,6 @@ set smartcase
 set splitbelow
 set splitright
 set tabstop=4
-"set termguicolors
 set title
 set ttimeoutlen=50
 set undofile
@@ -49,7 +48,11 @@ endif
 
 call plug#begin('~/.vim/plugged')
 Plug 'airblade/vim-gitgutter'" Show git status in left gutter, before numbers
-Plug 'altercation/vim-colors-solarized' " Solarized colorscheme
+if has('nvim')
+  Plug 'iCyMind/NeoSolarized'
+else
+  Plug 'altercation/vim-colors-solarized' " Solarized colorscheme
+endif
 Plug 'chiel92/vim-autoformat' " Code formatter
 Plug 'chrisbra/Colorizer' " Show hex code color
 Plug 'ctrlpvim/ctrlp.vim' " Incremental search
@@ -107,7 +110,16 @@ if(!v:shell_error)
 endif
 call plug#end()
 
-colorscheme solarized
+if has('nvim')
+  set termguicolors
+  colorscheme NeoSolarized
+  let g:neosolarized_bold = 1
+  let g:neosolarized_italic = 1
+  set background=dark
+else
+  colorscheme solarized
+endif
+
 
 "check if we need an upgrade or an update
 command! PU PlugUpgrade | PlugUpdate | UpdateRemotePlugins
