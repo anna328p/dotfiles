@@ -62,6 +62,7 @@ Plug 'isaacmorneau/vim-update-daily' "update vim plugins once a day
 Plug 'jez/vim-superman'
 Plug 'jistr/vim-nerdtree-tabs'
 Plug 'justinmk/vim-sneak'
+Plug 'LnL7/vim-nix'
 Plug 'luochen1990/rainbow' "rainbow highlight brackets
 Plug 'majutsushi/tagbar'
 Plug 'mhinz/vim-startify'
