@@ -49,38 +49,45 @@ endif
 call plug#begin('~/.vim/plugged')
 Plug 'airblade/vim-gitgutter'" Show git status in left gutter, before numbers
 if has('nvim')
+  Plug 'autozimu/LanguageClient-neovim', {
+  \     'branch': 'next',
+  \     'do': 'bash install.sh',
+  \   }
   Plug 'iCyMind/NeoSolarized'
+  Plug 'neomake/neomake' "do full syntax checking for most languages
+  Plug 'sebastianmarkow/deoplete-rust' "better rust support
+  Plug 'shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' } "the main autocomple engine
+  Plug 'shougo/neoinclude.vim' "also check completion in includes
+  Plug 'shougo/neco-syntax'
+  Plug 'shougo/neco-vim'
+  Plug 'fszymanski/deoplete-emoji'
+  Plug 'SevereOverfl0w/deoplete-github'
+  "Plug 'uplus/deoplete-solargraph'
+  Plug 'shougo/neco-vim'
+  Plug 'zchee/deoplete-clang' "better clang support
+  Plug 'zchee/deoplete-zsh'
 else
   Plug 'altercation/vim-colors-solarized' " Solarized colorscheme
 endif
 Plug 'chiel92/vim-autoformat' " Code formatter
 Plug 'chrisbra/Colorizer' " Show hex code color
-Plug 'ctrlpvim/ctrlp.vim' " Incremental search
 Plug 'felikZ/ctrlp-py-matcher' "the normal one doesnt prioritize exact matches so we need the py addition
 Plug 'godlygeek/tabular'
+"Plug 'isaacmorneau/vim-update-daily' "update vim plugins once a day
 Plug 'jez/vim-superman'
 Plug 'jistr/vim-nerdtree-tabs'
+Plug 'junegunn/fzf' "fuzzy jumping arround
 Plug 'justinmk/vim-sneak'
+Plug 'LnL7/vim-nix'
 Plug 'luochen1990/rainbow' "rainbow highlight brackets
 Plug 'majutsushi/tagbar'
 Plug 'mhinz/vim-startify'
-Plug 'neomake/neomake' "do full syntax checking for most languages
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'raimondi/delimitMate'
+Plug 'rhysd/vim-crystal'
 Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/syntastic'
-Plug 'sebastianmarkow/deoplete-rust' "better rust support
 Plug 'sheerun/vim-polyglot'
-Plug 'shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' } "the main autocomple engine
-Plug 'shougo/neoinclude.vim' "also check completion in includes
-Plug 'shougo/neco-syntax'
-Plug 'shougo/neco-vim'
-Plug 'fszymanski/deoplete-emoji'
-Plug 'SevereOverfl0w/deoplete-github'
-Plug 'wellle/tmux-complete.vim'
-Plug 'zchee/deoplete-zsh'
-"Plug 'uplus/deoplete-solargraph'
-Plug 'shougo/neco-vim'
 Plug 'slim-template/vim-slim'
 Plug 'tpope/vim-bundler'
 Plug 'tpope/vim-commentary'
@@ -90,15 +97,17 @@ Plug 'tpope/vim-rails'
 Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-sleuth'
+Plug 'tpope/vim-speeddating'
 Plug 'tpope/vim-surround'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-ruby/vim-ruby'
 Plug 'vim-scripts/HTML-AutoCloseTag'
 Plug 'vim-scripts/a.vim'
+Plug 'vim-scripts/c.vim'
+Plug 'wellle/tmux-complete.vim'
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-easytags'
-Plug 'zchee/deoplete-clang' "better clang support
 "dont add discord if its not installed(like on servers)
 let s:has_discord = 0
 silent !which discord || which discord-canary
@@ -172,7 +181,7 @@ let g:airline_detect_paste=1
 
 "NERDTree
 nmap <silent> <leader>t :NERDTreeTabsToggle<CR>
-let g:nerdtree_tabs_open_on_console_startup = 1
+"let g:nerdtree_tabs_open_on_console_startup = 1
 
 "Syntastic
 let g:syntastic_error_symbol = 'E'
@@ -262,28 +271,22 @@ let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
 
 "[rainbow]
 let g:rainbow_active = 1
-"           \   'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
-"           \   'ctermfgs': ['lightblue', 'lightyellow', 'lightcyan', 'lightmagenta'],
-"           \           'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick', 'darkorchid3'],
-let g:rainbow_conf = {
-            \   'operators': '_,_',
-            \   'parentheses': ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'],
-            \   'separately': {
-            \       '*': {},
-            \       'tex': {
-            \           'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/'],
-            \       },
-            \       'lisp': {
-            \       },
-            \       'vim': {
-            \           'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/', 'start=/{/ end=/}/ fold', 'start=/(/ end=/)/ containedin=vimFuncBody', 'start=/\[/ end=/\]/ containedin=vimFuncBody', 'start=/{/ end=/}/ fold containedin=vimFuncBody'],
-            \       },
-            \       'html': {
-            \           'parentheses': ['start=/\v\<((area|base|br|col|embed|hr|img|input|keygen|link|menuitem|meta|param|source|track|wbr)[ >])@!\z([-_:a-zA-Z0-9]+)(\s+[-_:a-zA-Z0-9]+(\=("[^"]*"|'."'".'[^'."'".']*'."'".'|[^ '."'".'"><=`]*))?)*\>/ end=#</\z1># fold'],
-            \       },
-            \       'css': 0,
-            \   }
-	    \}
-"python3 from powerline.vim import setup as powerline_setup
-"python3 powerline_setup()
-"python3 del powerline_setup
+
+"[fzf]
+map <C-m> :FZF<CR>
+set wildmode=list:longest,list:full
+set wildignore+=*.o,*.obj,.git,*.rbc,*.pyc,__pycache__
+let $FZF_DEFAULT_COMMAND =  "find * -path '*/\.*' -prune -o -path 'node_modules/**' -prune -o -path 'target/**' -prune -o -path 'dist/**' -prune -o  -type f -print -o -type l -print 2> /dev/null"
+
+" The Silver Searcher
+if executable('ag')
+    let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g ""'
+    set grepprg=ag\ --nogroup\ --nocolor
+endif
+
+" ripgrep
+if executable('rg')
+    let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!.git/*"'
+    set grepprg=rg\ --vimgrep
+    command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
+  endif
