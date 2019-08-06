@@ -181,7 +181,7 @@ exec_always --no-startup-id polybar main
 exec --no-startup-id compton
 exec --no-startup-id pkill nautilus
 exec --no-startup-id "setxkbmap -layout us,ru"
-exec --no-startup-id "setxkbmap -option 'grp:alt_shift_toggle'"
+#exec --no-startup-id "setxkbmap -option 'grp:alt_shift_toggle'"
 exec --no-startup-id "xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'"
 bindsym $mod+Ctrl+l exec /home/dmitry/bin/lock.sh
 

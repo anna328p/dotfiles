@@ -101,20 +101,36 @@ urlencode() {
 }
 
 shove () {
+  filename=/tmp/shove-$RAND.txt
+
   scp $* image-upload@dk0.us:/var/www/files/uploads
   for i in $*; do
-    echo "http://u.dk0.us/"$(urlencode "$(basename $i)")
+    echo "http://u.dk0.us/"$(urlencode "$(basename $i)") | tee -a $filename
   done
+
+  xclip -sel clip < $filename
 }
 
 rain () {
   curl -s https://isitraining.in/Sammamish | grep result | grep -oP '(?<=\>).+(?=\<)' --color=never
 }
 
-chromemem() {
-  echo -n "Chrome memory usage (GB): "
-  ps -e -o command,%mem | grep chrom | cut -d ' ' -f 3 | awk '{s+=$1} END {print s/100*16}'
+scratch () {
+  mkdir -p "$HOME/Documents/scratch"
+  if [ -z "$1" ]; then
+    nvim "$HOME/Documents/scratch"
+  else
+    nvim "$HOME/Documents/scratch/$1.md"
+  fi
 }
+
+function pygmentize_cat {
+  for arg in "$@"; do
+    pygmentize -O style='monokai' -g "${arg}" 2> /dev/null || /usr/bin/env cat "${arg}"
+  done
+}
+command -v pygmentize > /dev/null && alias cat=pygmentize_cat
+alias cat=pygmentize_cat
 
 #-----------------------------------------------------------------------------#
 

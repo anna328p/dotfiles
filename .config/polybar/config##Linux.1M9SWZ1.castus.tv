@@ -10,7 +10,7 @@ secondary = #e60053
 alert = #bd2c40
 
 [bar/main]
-monitor = ${env:MONITOR:LVDS}
+;monitor = ${env:MONITOR:LVDS}
 width = 100%
 height = 24
 fixed-center = false
@@ -35,7 +35,8 @@ font-0 = Source Code Pro:style=Regular:size=9;1
 
 modules-left = i3
 modules-center =
-modules-right = date cpu memory temperature filesystem wlan battery volume xkeyboard
+modules-right = date cpu memory temperature filesystem wlan battery volume d
+;modules-right = date cpu memory temperature filesystem wlan battery volume xkeyboard
 
 tray-position = right
 tray-padding = 2
@@ -167,18 +168,18 @@ ramp-used-7 = ██
 
 [module/wlan]
 type = internal/network
-interface = wlp2s0
+interface = wlp3s0
 interval = 3.0
 
 accumulate-stats = true
 
-format-connected = wlp2s0 <label-connected>
+format-connected = wlp3s0 <label-connected>
 format-connected-underline = #388E3C
 label-connected-foreground = ${colors.foreground}
 label-connected = %essid% [%local_ip%] %signal%% %downspeed%
 format-connected-foreground = ${colors.foreground-alt}
 
-format-disconnected = wlp2s0 <label-disconnected>
+format-disconnected = wlp3s0 <label-disconnected>
 format-disconnected-underline = ${self.format-connected-underline}
 label-disconnected = down
 label-disconnected-foreground = ${colors.foreground

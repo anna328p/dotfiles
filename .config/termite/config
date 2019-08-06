@@ -1,7 +1,7 @@
 [options]
 #font = xos4 Terminus 16px
 #font = Source Code Pro for Powerline 12px
-font = Source Code Pro Regular 12px
+font = Source Code Pro Regular 15.5px
 scrollback_lines = 10000000
 
 # Solarized dark color scheme
