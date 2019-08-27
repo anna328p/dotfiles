@@ -50,9 +50,9 @@ call plug#begin('~/.vim/plugged')
 Plug 'airblade/vim-gitgutter'" Show git status in left gutter, before numbers
 if has('nvim')
   Plug 'autozimu/LanguageClient-neovim', {
-  \     'branch': 'next',
-  \     'do': 'bash install.sh',
-  \   }
+        \     'branch': 'next',
+        \     'do': 'bash install.sh',
+        \   }
   Plug 'iCyMind/NeoSolarized'
   Plug 'neomake/neomake' "do full syntax checking for most languages
   Plug 'sebastianmarkow/deoplete-rust' "better rust support
@@ -71,6 +71,7 @@ else
 endif
 Plug 'chiel92/vim-autoformat' " Code formatter
 Plug 'chrisbra/Colorizer' " Show hex code color
+Plug 'dart-lang/dart-vim-plugin' " Dart support
 Plug 'felikZ/ctrlp-py-matcher' "the normal one doesnt prioritize exact matches so we need the py addition
 Plug 'godlygeek/tabular'
 "Plug 'isaacmorneau/vim-update-daily' "update vim plugins once a day
@@ -113,7 +114,7 @@ let s:has_discord = 0
 silent !which discord || which discord-canary
 if(!v:shell_error)
   let s:has_discord = 1
-"  Plug 'aurieh/discord.nvim', { 'do': ':UpdateRemotePlugins'}
+  "  Plug 'aurieh/discord.nvim', { 'do': ':UpdateRemotePlugins'}
 endif
 call plug#end()
 
@@ -140,34 +141,34 @@ autocmd BufWinEnter,WinEnter term://* startinsert
 
 "first install stuff
 if s:first_run
-    echom '==>Initial Setup<=='
-    echom 'Several packages require the python3 neovim package. Please install this to have full functionality.'
-    echom 'After neovim is installed restart nvim to complete the install.'
+  echom '==>Initial Setup<=='
+  echom 'Several packages require the python3 neovim package. Please install this to have full functionality.'
+  echom 'After neovim is installed restart nvim to complete the install.'
 endif
 if has('vim_starting')
-    if s:need_clean
-        autocmd VimEnter * PlugClean!
+  if s:need_clean
+    autocmd VimEnter * PlugClean!
+  endif
+  if len(s:need_install)
+    if s:first_run
+      execute 'autocmd VimEnter * PlugInstall --sync' s:need_install '| source $MYVIMRC | only! | term'
+    else
+      execute 'autocmd VimEnter * PlugInstall --sync' s:need_install ' | source $MYVIMRC'
     endif
-    if len(s:need_install)
-        if s:first_run
-            execute 'autocmd VimEnter * PlugInstall --sync' s:need_install '| source $MYVIMRC | only! | term'
-        else
-            execute 'autocmd VimEnter * PlugInstall --sync' s:need_install ' | source $MYVIMRC'
-        endif
-        finish
-    endif
+    finish
+  endif
 else
-    if s:need_clean
-        PlugClean!
+  if s:need_clean
+    PlugClean!
+  endif
+  if len(s:need_install)
+    if s:first_run
+      execute 'PlugInstall --sync' s:need_install | source $MYVIMRC | only! | term
+    else
+      execute 'PlugInstall --sync' s:need_install | source $MYVIMRC
     endif
-    if len(s:need_install)
-        if s:first_run
-            execute 'PlugInstall --sync' s:need_install | source $MYVIMRC | only! | term
-        else
-            execute 'PlugInstall --sync' s:need_install | source $MYVIMRC
-        endif
-        finish
-    endif
+    finish
+  endif
 endif
 
 "[update-daily]
@@ -280,13 +281,16 @@ let $FZF_DEFAULT_COMMAND =  "find * -path '*/\.*' -prune -o -path 'node_modules/
 
 " The Silver Searcher
 if executable('ag')
-    let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g ""'
-    set grepprg=ag\ --nogroup\ --nocolor
+  let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g ""'
+  set grepprg=ag\ --nogroup\ --nocolor
 endif
 
 " ripgrep
 if executable('rg')
-    let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!.git/*"'
-    set grepprg=rg\ --vimgrep
-    command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
-  endif
+  let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!.git/*"'
+  set grepprg=rg\ --vimgrep
+  command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
+endif
+
+" polyglot
+let g:polyglot_disabled = [ "dart" ]
