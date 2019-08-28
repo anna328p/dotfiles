@@ -1,35 +1,53 @@
 [options]
-#font = xos4 Terminus 16px
-#font = Source Code Pro for Powerline 12px
 font = Source Code Pro Regular 12px
 scrollback_lines = 10000000
 
-# Solarized dark color scheme
-
 [colors]
-foreground = #839496
-foreground_bold = #eee8d5
-#foreground_dim = #888888
-background = #002b36
-cursor = #93a1a1
+# Base16 Google Dark
+# Author: Seth Wright (http://sethawright.com)
 
-# if unset, will reverse foreground and background
-#highlight = #839496
+foreground          = #c5c8c6
+foreground_bold     = #e0e0e0
+cursor              = #e0e0e0
+cursor_foreground   = #1d1f21
+background          = rgba(29, 31, 33)
 
-# colors from color0 to color254 can be set
-color0 = #073642
-color1 = #dc322f
-color2 = #859900
-color3 = #b58900
-color4 = #268bd2
-color5 = #d33682
-color6 = #2aa198
-color7 = #eee8d5
-color8 = #002b36
-color9 = #cb4b16
-color10 = #586e75
-color11 = #657b83
-color12 = #839496
-color13 = #6c71c4
-color14 = #93a1a1
-color15 = #fdf6e3
+# 16 color space
+
+# Black, Gray, Silver, White
+color0  = #1d1f21
+color8  = #969896
+color7  = #c5c8c6
+color15 = #ffffff
+
+# Red
+color1  = #CC342B
+color9  = #CC342B
+
+# Green
+color2  = #198844
+color10 = #198844
+
+# Yellow
+color3  = #FBA922
+color11 = #FBA922
+
+# Blue
+color4  = #3971ED
+color12 = #3971ED
+
+# Purple
+color5  = #A36AC7
+color13 = #A36AC7
+
+# Teal
+color6  = #3971ED
+color14 = #3971ED
+
+# Extra colors
+color16 = #F96A38
+color17 = #3971ED
+color18 = #282a2e
+color19 = #373b41
+color20 = #b4b7b4
+color21 = #e0e0e0

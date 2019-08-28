@@ -1,37 +1,46 @@
-"set expandtab
-"set smarttab
 filetype plugin indent on
-set autoindent
+
 set autoread
-set background=dark
 set backspace=indent,eol,start
 set clipboard+=unnamed
-set copyindent
-set cursorline
 set formatoptions+=j
-set hidden
+
 set hlsearch
 set ignorecase
 set incsearch
-set laststatus=2
+
 set mouse=a
-set noshowmode
-set number
-set ruler
-set scrolloff=3
-set shiftwidth=4
-set showcmd
-set sidescrolloff=5
+set ttimeoutlen=50
 set smartcase
+
+set number
+set background=dark
+set cursorline
+set ruler
+
+set title
+set noshowmode
+set showcmd
+set hidden
+set laststatus=2
+
 set splitbelow
 set splitright
+
+set scrolloff=3
+set sidescrolloff=5
+set wrap
+
+set autoindent
+set copyindent
 set tabstop=4
-set title
-set ttimeoutlen=50
+set shiftwidth=4
+set noexpandtab
+
 set undofile
 set undolevels=1000
 set undoreload=10000
-set wrap
+
 syntax on
 
 let  $NVIM_TUI_ENABLE_CURSOR_SHAPE=0
