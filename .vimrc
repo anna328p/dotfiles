@@ -47,75 +47,95 @@ if empty(glob("~/.vim/autoload/plug.vim"))
 endif
 
 call plug#begin('~/.vim/plugged')
-Plug 'airblade/vim-gitgutter'" Show git status in left gutter, before numbers
-if has('nvim')
+
+  if has('nvim')
+    Plug 'iCyMind/NeoSolarized'
+  else
+    Plug 'roxma/vim-hug-neovim-rpc'
+    Plug 'altercation/vim-colors-solarized' " Solarized colorscheme
+  endif
+
+  Plug 'airblade/vim-gitgutter'" Show git status in left gutter, before numbers
+
+  " deoplete
+  Plug 'shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' } "the main autocomple engine
+  Plug 'shougo/neco-vim'
+
+  " deoplete addons
+  Plug 'shougo/neoinclude.vim' "also check completion in includes
+  Plug 'shougo/neco-syntax'
+  Plug 'fszymanski/deoplete-emoji'
+  Plug 'SevereOverfl0w/deoplete-github'
   Plug 'autozimu/LanguageClient-neovim', {
         \     'branch': 'next',
         \     'do': 'bash install.sh',
         \   }
-  Plug 'iCyMind/NeoSolarized'
   Plug 'neomake/neomake' "do full syntax checking for most languages
   Plug 'sebastianmarkow/deoplete-rust' "better rust support
-  Plug 'shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' } "the main autocomple engine
-  Plug 'shougo/neoinclude.vim' "also check completion in includes
-  Plug 'shougo/neco-syntax'
-  Plug 'shougo/neco-vim'
-  Plug 'fszymanski/deoplete-emoji'
-  Plug 'SevereOverfl0w/deoplete-github'
   "Plug 'uplus/deoplete-solargraph'
-  Plug 'shougo/neco-vim'
   Plug 'zchee/deoplete-clang' "better clang support
   Plug 'zchee/deoplete-zsh'
-else
-  Plug 'altercation/vim-colors-solarized' " Solarized colorscheme
-endif
-Plug 'chiel92/vim-autoformat' " Code formatter
-Plug 'chrisbra/Colorizer' " Show hex code color
-Plug 'dart-lang/dart-vim-plugin' " Dart support
-Plug 'felikZ/ctrlp-py-matcher' "the normal one doesnt prioritize exact matches so we need the py addition
-Plug 'godlygeek/tabular'
-"Plug 'isaacmorneau/vim-update-daily' "update vim plugins once a day
-Plug 'jez/vim-superman'
-Plug 'jistr/vim-nerdtree-tabs'
-Plug 'junegunn/fzf' "fuzzy jumping arround
-Plug 'justinmk/vim-sneak'
-Plug 'LnL7/vim-nix'
-Plug 'luochen1990/rainbow' "rainbow highlight brackets
-Plug 'majutsushi/tagbar'
-Plug 'mhinz/vim-startify'
-Plug 'ntpeters/vim-better-whitespace'
-Plug 'raimondi/delimitMate'
-Plug 'rhysd/vim-crystal'
-Plug 'scrooloose/nerdtree'
-Plug 'scrooloose/syntastic'
-Plug 'sheerun/vim-polyglot'
-Plug 'slim-template/vim-slim'
-Plug 'tpope/vim-bundler'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-dispatch'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-rails'
-Plug 'tpope/vim-rhubarb'
-Plug 'tpope/vim-sensible'
-Plug 'tpope/vim-sleuth'
-Plug 'tpope/vim-speeddating'
-Plug 'tpope/vim-surround'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'vim-ruby/vim-ruby'
-Plug 'vim-scripts/HTML-AutoCloseTag'
-Plug 'vim-scripts/a.vim'
-Plug 'vim-scripts/c.vim'
-Plug 'wellle/tmux-complete.vim'
-Plug 'xolox/vim-misc'
-Plug 'xolox/vim-easytags'
-"dont add discord if its not installed(like on servers)
-let s:has_discord = 0
-silent !which discord || which discord-canary
-if(!v:shell_error)
-  let s:has_discord = 1
-  "  Plug 'aurieh/discord.nvim', { 'do': ':UpdateRemotePlugins'}
-endif
+
+  " styles
+  Plug 'chiel92/vim-autoformat' " Code formatter
+  Plug 'chrisbra/Colorizer' " Show hex code color
+  Plug 'vim-airline/vim-airline'
+  Plug 'vim-airline/vim-airline-themes'
+  Plug 'luochen1990/rainbow' "rainbow highlight brackets
+
+  " language support
+  Plug 'dart-lang/dart-vim-plugin' " Dart support
+  Plug 'vim-ruby/vim-ruby'
+  Plug 'sheerun/vim-polyglot'
+  Plug 'rhysd/vim-crystal'
+  Plug 'scrooloose/syntastic'
+  Plug 'slim-template/vim-slim'
+  Plug 'vim-scripts/HTML-AutoCloseTag'
+  Plug 'LnL7/vim-nix'
+
+  " addons
+  Plug 'scrooloose/nerdtree'
+  Plug 'jistr/vim-nerdtree-tabs'
+  Plug 'godlygeek/tabular'
+  Plug 'jez/vim-superman'
+
+  Plug 'tpope/vim-bundler'
+  Plug 'tpope/vim-commentary'
+  Plug 'tpope/vim-dispatch'
+  Plug 'tpope/vim-fugitive'
+  Plug 'tpope/vim-rails'
+  Plug 'tpope/vim-rhubarb'
+  Plug 'tpope/vim-sensible'
+  Plug 'tpope/vim-sleuth'
+  Plug 'tpope/vim-speeddating'
+
+  " usability
+  Plug 'justinmk/vim-sneak'
+  Plug 'tpope/vim-surround'
+  Plug 'raimondi/delimitMate'
+  Plug 'xolox/vim-easytags'
+  Plug 'mhinz/vim-startify'
+
+  Plug 'felikZ/ctrlp-py-matcher' "the normal one doesnt prioritize exact matches so we need the py addition
+  Plug 'junegunn/fzf' "fuzzy jumping arround
+
+  " misc
+  Plug 'wellle/tmux-complete.vim'
+  Plug 'xolox/vim-misc'
+
+  "Plug 'isaacmorneau/vim-update-daily' "update vim plugins once a day
+  Plug 'majutsushi/tagbar'
+  Plug 'ntpeters/vim-better-whitespace'
+  Plug 'vim-scripts/a.vim'
+  Plug 'vim-scripts/c.vim'
+
+  let s:has_discord = 0
+  silent !which discord || which discord-canary
+  if(!v:shell_error)
+    let s:has_discord = 1
+    Plug 'aurieh/discord.nvim', { 'do': ':UpdateRemotePlugins'}
+  endif
+
 call plug#end()
 
 if has('nvim')
