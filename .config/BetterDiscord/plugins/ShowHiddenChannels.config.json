@@ -1,0 +1,41 @@
+{
+	"settings": {
+		"showText": true,
+		"showVoice": true,
+		"showNews": true,
+		"showStore": true,
+		"showCategory": true,
+		"showForNormal": false,
+		"showAllowedRoles": true,
+		"showOverWrittenRoles": true,
+		"showAllowedUsers": true,
+		"showDeniedRoles": true,
+		"showDeniedUsers": true,
+		"showTopic": false,
+		"showChannelCategory": false,
+		"showVoiceUsers": true
+	},
+	"categorystatus": {
+		"193958989627785217": false,
+		"297744523910578176": true,
+		"355750209730641920": false,
+		"401598508764889098": false,
+		"95520315542605824": false,
+		"311483592867971072": true,
+		"539980360717565962": false,
+		"494413758525997067": true,
+		"402276171037016064": true,
+		"568306982717751326": false,
+		"150662382874525696": false,
+		"363382921744351234": true,
+		"551515299237855248": false,
+		"167661427862142976": true,
+		"522535157618442250": true
+	},
+	"amounts": {
+		"hoverDelay": 0
+	},
+	"changelog": {
+		"currentversion": "2.5.5"
+	}
+}

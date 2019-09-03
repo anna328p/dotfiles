@@ -1,0 +1,10 @@
+{
+	"settings": {
+		"closeOtherFolders": false,
+		"closeTheFolder": false,
+		"closeAllFolders": false,
+		"forceOpenFolder": false,
+		"showCountBadge": true,
+		"addSeparators": true
+	}
+}

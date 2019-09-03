@@ -1,0 +1,11 @@
+{
+    "settings": {
+        "fullRes": true,
+        "onClick": false,
+        "minSize": false,
+        "height": "auto",
+        "width": "auto",
+        "tooltips": false,
+        "debug": false
+    }
+}
