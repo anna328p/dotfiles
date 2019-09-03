@@ -57,12 +57,11 @@ endif
 
 call plug#begin('~/.vim/plugged')
 
-  if has('nvim')
-    Plug 'iCyMind/NeoSolarized'
-  else
+  if !has('nvim')
     Plug 'roxma/vim-hug-neovim-rpc'
-    Plug 'altercation/vim-colors-solarized' " Solarized colorscheme
   endif
+
+  Plug 'chriskempson/base16-vim'
 
   Plug 'airblade/vim-gitgutter'" Show git status in left gutter, before numbers
 
@@ -149,12 +148,10 @@ call plug#end()
 
 if has('nvim')
   set termguicolors
-  colorscheme NeoSolarized
-  let g:neosolarized_bold = 1
-  let g:neosolarized_italic = 1
+  colorscheme base16-google-dark
   set background=dark
 else
-  colorscheme solarized
+  colorscheme base16-google-dark
 endif
 
 
@@ -253,6 +250,7 @@ augroup mydelimitMate
   au FileType tex let b:delimitMate_matchpairs = "(:),[:],{:},`:'"
   au FileType python let b:delimitMate_nesting_quotes = ['"', "'"]
 augroup END"'"'"]"'"`
+
 "set foldmethod=syntax
 "set foldnestmax=2
 "set foldcolumn=1
@@ -265,7 +263,7 @@ augroup END"'"'"]"'"`
 "let vimsyn_folding='af'	   " Vim script
 "let xml_syntax_folding=1	  " XML
 
-set guifont=Source\ Code\ Pro\ 10
+set guifont=Source\ Code\ Pro\ 15.5
 
 " Tab navigation like Firefox.
 nnoremap <C-S-tab> :bprevious<CR>
