@@ -10,6 +10,8 @@ export CDPATH=.:$HOME:$CDPATH
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=11'
 export BAT_THEME="TwoDark"
 
+export NIX_AUTO_RUN=1
+
 PERL5LIB="/home/dmitry/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
 PERL_LOCAL_LIB_ROOT="/home/dmitry/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
 PERL_MB_OPT="--install_base \"/home/dmitry/perl5\""; export PERL_MB_OPT;
@@ -163,9 +165,4 @@ zle -N sudo-command-line
 bindkey "\e\e" sudo-command-line
 
 [ -f /usr/share/doc/pkgfile/command-not-found.zsh ] && source /usr/share/doc/pkgfile/command-not-found.zsh
-source ~/.local/share/icons-in-terminal/icons_bash.sh
-#source /storage/opt/intel/system_studio_2018/compilers_and_libraries_2018.2.199/linux/bin/iccvars.sh intel64
-#
-#powerline-daemon -q
-#[ -e /usr/lib/python3.6/site-packages/powerline/bindings/zsh/powerline.zsh ] && . /usr/lib/python3.6/site-packages/powerline/bindings/zsh/powerline.zsh
-#[ -e ~/.local/lib64/python3.5/site-packages/powerline/bindings/zsh/powerline.zsh ] && . ~/.local/lib64/python3.5/site-packages/powerline/bindings/zsh/powerline.zsh
+[ -f ~/.local/share/icons-in-terminal/icons_bash.sh ] && source ~/.local/share/icons-in-terminal/icons_bash.sh
