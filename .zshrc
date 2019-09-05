@@ -1,6 +1,5 @@
 source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 
-# export ARCHFLAGS="-arch x86_64"
 export MANPATH="/usr/local/man:$MANPATH"
 export DEFAULT_USER=$(whoami)
 export EDITOR=$(which nvim)
@@ -9,74 +8,27 @@ export MAKEFLAGS="-j$(expr $(nproc) \+ 1)"
 export CDPATH=.:$HOME:$CDPATH
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=11'
 export BAT_THEME="TwoDark"
-
 export NIX_AUTO_RUN=1
-
-PERL5LIB="/home/dmitry/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
-PERL_LOCAL_LIB_ROOT="/home/dmitry/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
-PERL_MB_OPT="--install_base \"/home/dmitry/perl5\""; export PERL_MB_OPT;
-PERL_MM_OPT="INSTALL_BASE=/home/dmitry/perl5"; export PERL_MM_OPT;
 
 zmodload -a zsh/zpty zpty
 
-eval `dircolors ~/.dircolors`
-[ $DISPLAY ] && xrdb ~/.Xresources
+setopt GLOB_DOTS
 
-export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:/home/dmitry/.gem/ruby/2.5.0/bin:$PATH
-export PATH="/home/dmitry/perl5/bin${PATH:+:${PATH}}"
+eval `dircolors ~/.dircolors`
+[ $DISPLAY ] && [[ -e ~/.Xresources ]] && xrdb ~/.Xresources
+
+export PATH=$HOME/bin:$HOME/.local/bin:$PATH
 
 hash -d w='/home/dmitry/work'
 
-[ -e /etc/pacman.conf ] && alias pacman='pikaur'
-[ -d /etc/portage ] && alias pacman='sudo pacman'
-alias vim='nvim'
+alias vim="$EDITOR"
 alias open='xdg-open'
-alias syu='pacman -Syu'
-alias install='pacman -S'
-[  $(cat /etc/hostname) = wat  -o  $(cat /etc/hostname) = watbook  ] && [ -e /opt/coreutils/bin/ls ] && [ -e /bin/bash ] && alias ls='/opt/coreutils/bin/ls'
 alias power='for i in $(upower -e); do echo $i &&upower -i $i; done'
-alias kexec-reboot='sudo kexec -l /boot/vmlinuz-linux-zen --initrd=/boot/initramfs-linux-zen.img --reuse-cmdline; sudo systemctl kexec'
 alias :wq='exit'
 alias :tabopen='tmux new-window'
 alias :e='vim'
 alias :w='sync'
 alias :q='exit'
-
-alias -g CA="2>&1 | cat -A"
-alias -g C='| wc -l'
-alias -g D="DISPLAY=:0.0"
-alias -g DN=/dev/null
-alias -g ED="export DISPLAY=:0.0"
-alias -g EG='|& egrep'
-alias -g EH='|& head'
-alias -g EL='|& less'
-alias -g ELS='|& less -S'
-alias -g ETL='|& tail -20'
-alias -g ET='|& tail'
-alias -g F=' | fmt -'
-alias -g G='| egrep'
-alias -g H='| head'
-alias -g HL='|& head -20'
-alias -g Sk="*~(*.bz2|*.gz|*.tgz|*.zip|*.z)"
-alias -g LL="2>&1 | less"
-alias -g L="| less"
-alias -g LS='| less -S'
-alias -g MM='| most'
-alias -g M='| more'
-alias -g NE="2> /dev/null"
-alias -g NS='| sort -n'
-alias -g NUL="> /dev/null 2>&1"
-alias -g PIPE='|'
-alias -g R=' > ~/tee.txt '
-alias -g RNS='| sort -nr'
-alias -g S='| sort'
-alias -g TL='| tail -20'
-alias -g T='| tail'
-alias -g US='| sort -u'
-alias -g X0G='| xargs -0 egrep'
-alias -g X0='| xargs -0'
-alias -g XG='| xargs egrep'
-alias -g X='| xargs'
 
 export GPG_TTY=$(tty)
 
@@ -103,20 +55,36 @@ urlencode() {
 }
 
 shove () {
+  filename=/tmp/shove-$RAND.txt
+
   scp $* image-upload@dk0.us:/var/www/files/uploads
   for i in $*; do
-    echo "http://u.dk0.us/"$(urlencode "$(basename $i)")
+    echo "http://u.dk0.us/"$(urlencode "$(basename $i)") | tee -a $filename
   done
+
+  xclip -sel clip < $filename
 }
 
 rain () {
   curl -s https://isitraining.in/Sammamish | grep result | grep -oP '(?<=\>).+(?=\<)' --color=never
 }
 
-chromemem() {
-  echo -n "Chrome memory usage (GB): "
-  ps -e -o command,%mem | grep chrom | cut -d ' ' -f 3 | awk '{s+=$1} END {print s/100*16}'
+scratch () {
+  mkdir -p "$HOME/Documents/scratch"
+  if [ -z "$1" ]; then
+    nvim "$HOME/Documents/scratch"
+  else
+    nvim "$HOME/Documents/scratch/$1.md"
+  fi
 }
+
+function pygmentize_cat {
+  for arg in "$@"; do
+    pygmentize -O style='monokai' -g "${arg}" 2> /dev/null || /usr/bin/env cat "${arg}"
+  done
+}
+command -v pygmentize > /dev/null && alias cat=pygmentize_cat
+alias cat=pygmentize_cat
 
 #-----------------------------------------------------------------------------#
 
@@ -143,7 +111,6 @@ setopt AUTO_PUSHD PUSHD_SILENT PUSHD_TO_HOME
 # This reverts the +/- operators.
 #setopt PUSHD_MINUS
 
-
 #-----------------------------------------------------------------------------#
 
 sudo-command-line() {
@@ -163,6 +130,3 @@ sudo-command-line() {
 zle -N sudo-command-line
 # Defined shortcut keys: [Esc] [Esc]
 bindkey "\e\e" sudo-command-line
-
-[ -f /usr/share/doc/pkgfile/command-not-found.zsh ] && source /usr/share/doc/pkgfile/command-not-found.zsh
-[ -f ~/.local/share/icons-in-terminal/icons_bash.sh ] && source ~/.local/share/icons-in-terminal/icons_bash.sh
