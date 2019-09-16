@@ -86,6 +86,10 @@ function pygmentize_cat {
 command -v pygmentize > /dev/null && alias cat=pygmentize_cat
 alias cat=pygmentize_cat
 
+psgrep () {
+  ps aux | grep -v grep | grep $*
+}
+
 #-----------------------------------------------------------------------------#
 
 DIRSTACKFILE="$HOME/.cache/zsh/dirs"
