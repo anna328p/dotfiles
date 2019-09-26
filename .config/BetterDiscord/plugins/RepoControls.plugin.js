@@ -3,23 +3,25 @@
 class RepoControls {
 	getName () {return "RepoControls";}
 
-	getVersion () {return "1.2.8";}
+	getVersion () {return "1.3.1";}
 
 	getAuthor () {return "DevilBro";}
 
 	getDescription () {return "Lets you sort and filter your list of downloaded Themes and Plugins.";}
 
-	initConstructor () {
+	constructor () {
 		this.changelog = {
-			"fixed":[["Canary/PTB","Fixed the plugin for canary and ptb"]]
+			"fixed":[["Light Theme Update","Fixed bugs for the Light Theme Update, which broke 99% of my plugins"]]
 		};
-		
+
 		this.patchModules = {
 			"V2C_List":"componentDidMount",
 			"V2C_PluginCard": ["componentDidMount","componentDidUpdate"],
 			"V2C_ThemeCard": ["componentDidMount","componentDidUpdate"]
 		};
+	}
 
+	initConstructor () {
 		this.sortings = {
 			sort: {
 				name:			"Name",
@@ -65,9 +67,9 @@ class RepoControls {
 		this.sortPopoutMarkup =
 			`<div class="${BDFDB.disCNS.popout + BDFDB.disCNS.popoutbottomright + BDFDB.disCN.popoutnoshadow} repocontrols-sort-popout" style="position: fixed; z-index: 1100; visibility: visible; transform: translateX(-100%) translateY(0%) translateZ(0px);">
 				<div>
-					<div class="${BDFDB.disCN.contextmenu} quickSelectPopout">
+					<div class="${BDFDB.disCN.contextmenu} BDFDB-quickSelectPopout">
 						<div class="${BDFDB.disCN.contextmenuitemgroup}">
-							${Object.keys(this.sortings.sort).map((key, i) => `<div option="${key}" class="${BDFDB.disCN.contextmenuitem}">${this.sortings.sort[key]}</div>`).join("")}
+							${Object.keys(this.sortings.sort).map((key, i) => `<div option="${key}" class="${BDFDB.disCNS.contextmenuitem + BDFDB.disCN.contextmenuitemclickable}">${this.sortings.sort[key]}</div>`).join("")}
 						</div>
 					</div>
 				</div>
@@ -76,9 +78,9 @@ class RepoControls {
 		this.orderPopoutMarkup =
 			`<div class="${BDFDB.disCNS.popout + BDFDB.disCNS.popoutbottomright + BDFDB.disCN.popoutnoshadow} repocontrols-order-popout" style="position: fixed; z-index: 1100; visibility: visible; transform: translateX(-100%) translateY(0%) translateZ(0px);">
 				<div>
-					<div class="${BDFDB.disCN.contextmenu} quickSelectPopout">
+					<div class="${BDFDB.disCN.contextmenu} BDFDB-quickSelectPopout">
 						<div class="${BDFDB.disCN.contextmenuitemgroup}">
-							${Object.keys(this.sortings.order).map((key, i) => `<div option="${key}" class="${BDFDB.disCN.contextmenuitem}">${this.sortings.order[key]}</div>`).join("")}
+							${Object.keys(this.sortings.order).map((key, i) => `<div option="${key}" class="${BDFDB.disCNS.contextmenuitem + BDFDB.disCN.contextmenuitemclickable}">${this.sortings.order[key]}</div>`).join("")}
 						</div>
 					</div>
 				</div>
@@ -151,15 +153,30 @@ class RepoControls {
 	start () {
 		if (!global.BDFDB) global.BDFDB = {myPlugins:{}};
 		if (global.BDFDB && global.BDFDB.myPlugins && typeof global.BDFDB.myPlugins == "object") global.BDFDB.myPlugins[this.getName()] = this;
-		var libraryScript = document.querySelector('head script[src="https://mwittrien.github.io/BetterDiscordAddons/Plugins/BDFDB.js"]');
-		if (!libraryScript || performance.now() - libraryScript.getAttribute("date") > 600000) {
+		var libraryScript = document.querySelector('head script#BDFDBLibraryScript');
+		if (!libraryScript || (performance.now() - libraryScript.getAttribute("date")) > 600000) {
 			if (libraryScript) libraryScript.remove();
 			libraryScript = document.createElement("script");
+			libraryScript.setAttribute("id", "BDFDBLibraryScript");
 			libraryScript.setAttribute("type", "text/javascript");
 			libraryScript.setAttribute("src", "https://mwittrien.github.io/BetterDiscordAddons/Plugins/BDFDB.js");
 			libraryScript.setAttribute("date", performance.now());
-			libraryScript.addEventListener("load", () => {if (global.BDFDB && typeof BDFDB === "object" && BDFDB.loaded) this.initialize();});
+			libraryScript.addEventListener("load", () => {this.initialize();});
 			document.head.appendChild(libraryScript);
+			this.libLoadTimeout = setTimeout(() => {
+				libraryScript.remove();
+				BDFDB.LibraryRequires.request("https://mwittrien.github.io/BetterDiscordAddons/Plugins/BDFDB.js", (error, response, body) => {
+					if (body) {
+						libraryScript = document.createElement("script");
+						libraryScript.setAttribute("id", "BDFDBLibraryScript");
+						libraryScript.setAttribute("type", "text/javascript");
+						libraryScript.setAttribute("date", performance.now());
+						libraryScript.innerText = body;
+						document.head.appendChild(libraryScript);
+					}
+					this.initialize();
+				});
+			}, 15000);
 		}
 		else if (global.BDFDB && typeof BDFDB === "object" && BDFDB.loaded) this.initialize();
 		this.startTimeout = setTimeout(() => {this.initialize();}, 30000);
@@ -169,9 +186,7 @@ class RepoControls {
 		if (global.BDFDB && typeof BDFDB === "object" && BDFDB.loaded) {
 			if (this.started) return;
 			BDFDB.loadMessage(this);
-
-			this.fs = require("fs");
-			this.path = require("path");
+			
 			this.dirs = {theme: BDFDB.getThemesFolder(), plugin: BDFDB.getPluginsFolder()};
 
 			BDFDB.WebModules.forceAllUpdates(this);
@@ -205,11 +220,11 @@ class RepoControls {
 
 	// begin of own functions
 
-	processV2CList (instance, container) {
+	processV2CList (instance, container, returnvalue) {
 		if (instance._reactInternalFiber.key) this.addControls(instance._reactInternalFiber.key.split("-")[0], container);
 	}
 
-	processV2CPluginCard (instance, wrapper, methodnames) {
+	processV2CPluginCard (instance, wrapper, returnvalue, methodnames) {
 		if (wrapper.querySelector(BDFDB.dotCN._reponame)) {
 			let settings = BDFDB.getAllData(this, "settings");
 			if (instance.props && settings.addDeleteButton) this.addDeleteButton("plugin", wrapper);
@@ -218,7 +233,7 @@ class RepoControls {
 		}
 	}
 
-	processV2CThemeCard (instance, wrapper, methodnames) {
+	processV2CThemeCard (instance, wrapper, returnvalue, methodnames) {
 		if (wrapper.querySelector(BDFDB.dotCN._reponame)) {
 			let settings = BDFDB.getAllData(this, "settings");
 			if (instance.props && settings.addDeleteButton) this.addDeleteButton("theme", wrapper);
@@ -232,11 +247,11 @@ class RepoControls {
 		let name = wrapper.getAttribute("data-name");
 		let controls = wrapper.querySelector(BDFDB.dotCN._repocontrols);
 		if (!name || !controls) return;
-		let path = global[`bd${type}s`] && global[`bd${type}s`][name] ? this.path.join(this.dirs[type], global[`bd${type}s`][name].filename) : null;
+		let path = global[`bd${type}s`] && global[`bd${type}s`][name] ? BDFDB.LibraryRequires.path.join(this.dirs[type], global[`bd${type}s`][name].filename) : null;
 		if (!path) return;
 		let button = BDFDB.htmlToElement(this.editButtonMarkup);
 		button.addEventListener("click", () => {
-			if (!require("electron").shell.openItem(path)) BDFDB.showToast(`Unable to open ${type} "${name}".`, {type:"danger"});;
+			if (!BDFDB.LibraryRequires.electron.shell.openItem(path)) BDFDB.showToast(`Unable to open ${type} "${name}".`, {type:"danger"});;
 		});
 		button.addEventListener("mouseenter", e => {
 			BDFDB.createTooltip(`Edit ${type[0].toUpperCase() + type.slice(1)}`, e.currentTarget, {type:"top",selector:"repocontrols-editicon-tooltip"});
@@ -249,12 +264,12 @@ class RepoControls {
 		let name = wrapper.getAttribute("data-name");
 		let controls = wrapper.querySelector(BDFDB.dotCN._repocontrols);
 		if (!name || !controls) return;
-		let path = global[`bd${type}s`] && global[`bd${type}s`][name] ? this.path.join(this.dirs[type], global[`bd${type}s`][name].filename) : null;
+		let path = global[`bd${type}s`] && global[`bd${type}s`][name] ? BDFDB.LibraryRequires.path.join(this.dirs[type], global[`bd${type}s`][name].filename) : null;
 		if (!path) return;
 		let button = BDFDB.htmlToElement(this.deleteButtonMarkup);
 		button.addEventListener("click", () => {
 			let deleteFile = () => {
-				this.fs.unlink(path, (error) => {
+				BDFDB.LibraryRequires.fs.unlink(path, (error) => {
 					if (error) BDFDB.showToast(`Unable to delete ${type} "${name}".`, {type:"danger"});
 					else BDFDB.showToast(`Successfully deleted ${type} "${name}".`, {type:"success"});
 				});
@@ -327,10 +342,10 @@ class RepoControls {
 				let author = li.querySelector(BDFDB.dotCN._repoauthor).textContent;
 				let description = li.querySelector(BDFDB.dotCN._repodescription).textContent;
 				let enabled = li.querySelector(BDFDB.dotCN._repocheckbox).checked;
-				let path = global[`bd${type}s`] && global[`bd${type}s`][name] ? this.path.join(this.dirs[type], global[`bd${type}s`][name].filename) : null;
-				let stats = path ? this.fs.statSync(path) : null;
+				let path = global[`bd${type}s`] && global[`bd${type}s`][name] ? BDFDB.LibraryRequires.path.join(this.dirs[type], global[`bd${type}s`][name].filename) : null;
+				let stats = path ? BDFDB.LibraryRequires.fs.statSync(path) : null;
 				container.entries[name] = {
-					search:			(name + " " + version + " " + author + " " + description).toUpperCase(),
+					search:			(name + " " + author + " " + description).toUpperCase(),
 					origName: 		name,
 					name: 			(name).toUpperCase(),
 					version: 		(version).toUpperCase(),
@@ -376,14 +391,14 @@ class RepoControls {
 
 	changeTextToHTML (wrapper, searchstring) {
 		if (!wrapper || !wrapper.tagName) return;
-		for (let ele of wrapper.querySelectorAll(BDFDB.dotCNC._reponame + BDFDB.dotCNC._repoversion + BDFDB.dotCNC._repoauthor + BDFDB.dotCN._repodescription)) {
+		for (let ele of wrapper.querySelectorAll(BDFDB.dotCNC._reponame + BDFDB.dotCNC._repoauthor + BDFDB.dotCN._repodescription)) {
 			var string = ele.firstElementChild ? ele.innerHTML : ele.innerText;
 			if (BDFDB.containsClass(ele, BDFDB.disCN._repodescription)) {
 				ele.style.display = "block";
 				if (searchstring && searchstring.length > 2) ele.innerHTML = BDFDB.highlightText(string, searchstring);
 				else ele.innerHTML = string;
 			}
-			else if (searchstring && searchstring.length > 2 || ele.querySelector(BDFDB.dotCN.highlight)) ele.innerHTML = BDFDB.highlightText(string, searchstring); 
+			else if (searchstring && searchstring.length > 2 || ele.querySelector(BDFDB.dotCN.highlight)) ele.innerHTML = BDFDB.highlightText(string, searchstring);
 		}
 	}
 
