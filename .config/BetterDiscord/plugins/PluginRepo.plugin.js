@@ -3,21 +3,23 @@
 class PluginRepo {
 	getName () {return "PluginRepo";} 
 
-	getVersion () {return "1.8.2";}
+	getVersion () {return "1.8.7";}
 
 	getAuthor () {return "DevilBro";}
 
 	getDescription () {return "Allows you to look at all plugins from the plugin repo and download them on the fly. Repo button is in the plugins settings.";}
 
-	initConstructor () {
+	constructor () {
 		this.changelog = {
-			"fixed":[["Refetch","Fixed refetching occuring every x hours"]]
+			"improved":[["Preview","Now also uses Modules to grab classnames"]]
 		};
-		
+
 		this.patchModules = {
 			"V2C_List":"componentDidMount"
 		};
+	}
 
+	initConstructor () {
 		this.sortings = {
 			sort: {
 				name:			"Name",
@@ -42,12 +44,6 @@ class PluginRepo {
 		this.loadedPlugins = {};
 
 		this.updateInterval;
-
-		this.settingsContextEntryMarkup =
-			`<div class="${BDFDB.disCN.contextmenuitem} pluginrepo-item">
-				<span>Plugin Repo</span>
-				<div class="${BDFDB.disCN.contextmenuhint}"></div>
-			</div>`;
 
 		this.pluginRepoIconMarkup =
 			`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="34" height="31" viewBox="0 0 400 382">
@@ -99,10 +95,10 @@ class PluginRepo {
 				<div class="${BDFDB.disCN.modal}">
 					<div class="${BDFDB.disCN.modalinner}">
 						<div class="${BDFDB.disCNS.modalsub + BDFDB.disCN.modalsizelarge}">
-							<div class="${BDFDB.disCNS.flex + BDFDB.disCNS.flex2 + BDFDB.disCNS.horizontal + BDFDB.disCNS.horizontal2 + BDFDB.disCNS.directionrow + BDFDB.disCNS.justifystart + BDFDB.disCNS.aligncenter + BDFDB.disCNS.nowrap + BDFDB.disCN.modalheader}" style="flex: 0 0 auto; padding-bottom: 10px;">
+							<div class="${BDFDB.disCNS.flex + BDFDB.disCNS.horizontal + BDFDB.disCNS.justifystart + BDFDB.disCNS.aligncenter + BDFDB.disCNS.nowrap + BDFDB.disCN.modalheader}" style="flex: 0 0 auto; padding-bottom: 10px;">
 								<div class="${BDFDB.disCN.flexchild}" style="flex: 1 1 auto;">
-									<h4 class="${BDFDB.disCNS.h4 + BDFDB.disCNS.headertitle + BDFDB.disCNS.size16 + BDFDB.disCNS.height20 + BDFDB.disCNS.weightsemibold + BDFDB.disCNS.defaultcolor + BDFDB.disCNS.h4defaultmargin + BDFDB.disCN.marginreset} pluginAmount">Plugin Repository</h4>
-									<div class="${BDFDB.disCNS.modalguildname + BDFDB.disCNS.small + BDFDB.disCNS.size12 + BDFDB.disCNS.height16 + BDFDB.disCN.primary}"></div>
+									<h4 class="${BDFDB.disCNS.h4 + BDFDB.disCNS.defaultcolor + BDFDB.disCN.h4defaultmargin} pluginAmount">Plugin Repository</h4>
+									<div class="${BDFDB.disCNS.modalguildname + BDFDB.disCNS.small + BDFDB.disCNS.titlesize12 + BDFDB.disCNS.height16 + BDFDB.disCN.primary}"></div>
 								</div>
 								<button type="button" class="${BDFDB.disCNS.modalclose + BDFDB.disCNS.flexchild + BDFDB.disCNS.button + BDFDB.disCNS.buttonlookblank + BDFDB.disCNS.buttoncolorbrand + BDFDB.disCN.buttongrow}">
 									<div class="${BDFDB.disCN.buttoncontents}">
@@ -115,55 +111,55 @@ class PluginRepo {
 									</div>
 								</button>
 							</div>
-							<div class="${BDFDB.disCNS.flex + BDFDB.disCNS.flex2 + BDFDB.disCNS.horizontal + BDFDB.disCNS.horizontal2 + BDFDB.disCNS.directionrow + BDFDB.disCNS.justifystart + BDFDB.disCNS.aligncenter + BDFDB.disCNS.nowrap + BDFDB.disCNS.marginbottom8 + BDFDB.disCN.tabbarcontainer}" style="flex: 0 0 auto; padding-right: 12px;">
+							<div class="${BDFDB.disCNS.flex + BDFDB.disCNS.horizontal + BDFDB.disCNS.justifystart + BDFDB.disCNS.aligncenter + BDFDB.disCNS.nowrap + BDFDB.disCNS.marginbottom8 + BDFDB.disCN.tabbarcontainer}" style="flex: 0 0 auto; padding-right: 12px;">
 								<div class="${BDFDB.disCNS.tabbar + BDFDB.disCN.tabbartop}">
 									<div tab="plugins" class="${BDFDB.disCNS.settingsitem + BDFDB.disCN.tabbaritem}">Plugins</div>
 									<div tab="settings" class="${BDFDB.disCNS.settingsitem + BDFDB.disCN.tabbaritem}">Settings</div>
 								</div>
-								<div class="${BDFDB.disCNS.flex + BDFDB.disCNS.flex2 + BDFDB.disCNS.horizontal + BDFDB.disCNS.horizontal2 + BDFDB.disCNS.directionrow + BDFDB.disCNS.justifystart + BDFDB.disCNS.aligncenter + BDFDB.disCNS.nowrap + BDFDB.disCN.quickselect}">
+								<div class="${BDFDB.disCNS.flex + BDFDB.disCNS.horizontal + BDFDB.disCNS.justifystart + BDFDB.disCNS.aligncenter + BDFDB.disCNS.nowrap + BDFDB.disCN.quickselect}">
 									<div class="${BDFDB.disCN.quickselectlabel}">Sort by:</div>
-									<div class="${BDFDB.disCNS.flex + BDFDB.disCNS.flex2 + BDFDB.disCNS.horizontal + BDFDB.disCNS.horizontal2 + BDFDB.disCNS.directionrow + BDFDB.disCNS.justifystart + BDFDB.disCNS.aligncenter + BDFDB.disCNS.nowrap + BDFDB.disCN.quickselectclick} sort-filter" style="flex: 0 0 auto;">
+									<div class="${BDFDB.disCNS.flex + BDFDB.disCNS.horizontal + BDFDB.disCNS.justifystart + BDFDB.disCNS.aligncenter + BDFDB.disCNS.nowrap + BDFDB.disCN.quickselectclick} sort-filter" style="flex: 0 0 auto;">
 										<div option="${Object.keys(this.sortings.sort)[0]}" class="${BDFDB.disCN.quickselectvalue}">${this.sortings.sort[Object.keys(this.sortings.sort)[0]]}</div>
 										<div class="${BDFDB.disCN.quickselectarrow}"></div>
 									</div>
 								</div>
-								<div class="${BDFDB.disCNS.flex + BDFDB.disCNS.flex2 + BDFDB.disCNS.horizontal + BDFDB.disCNS.horizontal2 + BDFDB.disCNS.directionrow + BDFDB.disCNS.justifystart + BDFDB.disCNS.aligncenter + BDFDB.disCNS.nowrap + BDFDB.disCN.quickselect}">
+								<div class="${BDFDB.disCNS.flex + BDFDB.disCNS.horizontal + BDFDB.disCNS.justifystart + BDFDB.disCNS.aligncenter + BDFDB.disCNS.nowrap + BDFDB.disCN.quickselect}">
 									<div class="${BDFDB.disCN.quickselectlabel}">Order:</div>
-									<div class="${BDFDB.disCNS.flex + BDFDB.disCNS.flex2 + BDFDB.disCNS.horizontal + BDFDB.disCNS.horizontal2 + BDFDB.disCNS.directionrow + BDFDB.disCNS.justifystart + BDFDB.disCNS.aligncenter + BDFDB.disCNS.nowrap + BDFDB.disCN.quickselectclick} order-filter" style="flex: 0 0 auto;">
+									<div class="${BDFDB.disCNS.flex + BDFDB.disCNS.horizontal + BDFDB.disCNS.justifystart + BDFDB.disCNS.aligncenter + BDFDB.disCNS.nowrap + BDFDB.disCN.quickselectclick} order-filter" style="flex: 0 0 auto;">
 										<div option="${Object.keys(this.sortings.order)[0]}" class="${BDFDB.disCN.quickselectvalue}">${this.sortings.order[Object.keys(this.sortings.order)[0]]}</div>
 										<div class="${BDFDB.disCN.quickselectarrow}"></div>
 									</div>
 								</div>
 							</div>
-							<div tab="plugins" class="${BDFDB.disCNS.scrollerwrap + BDFDB.disCNS.modalcontent + BDFDB.disCNS.scrollerthemed + BDFDB.disCN.themeghosthairline} tab-content">
+							<div tab="plugins" class="${BDFDB.disCNS.scrollerwrap + BDFDB.disCNS.modalcontent + BDFDB.disCNS.scrollerthemed + BDFDB.disCN.scrollerthemeghosthairline} tab-content">
 								<div class="${BDFDB.disCNS.scroller + BDFDB.disCN.modalsubinner}">
-									<ul class="${BDFDB.disCNS.flex + BDFDB.disCNS.flex2 + BDFDB.disCNS.vertical + BDFDB.disCNS.directioncolumn + BDFDB.disCNS.justifystart + BDFDB.disCNS.alignstretch + BDFDB.disCNS.nowrap + BDFDB.disCN._repolist} plugins" style="flex: 1 1 auto; display: flex !important; display: flex-direction: column !important; margin: unset !important; width: unset !important;"></ul>
+									<ul class="${BDFDB.disCNS.flex + BDFDB.disCNS.vertical + BDFDB.disCNS.justifystart + BDFDB.disCNS.alignstretch + BDFDB.disCNS.nowrap + BDFDB.disCN._repolist} plugins" style="flex: 1 1 auto; display: flex !important; display: flex-direction: column !important; margin: unset !important; width: unset !important;"></ul>
 								</div>
 							</div>
-							<div tab="settings" class="${BDFDB.disCNS.flex + BDFDB.disCNS.flex2 + BDFDB.disCNS.vertical + BDFDB.disCNS.directioncolumn + BDFDB.disCNS.justifystart + BDFDB.disCNS.alignstretch + BDFDB.disCNS.nowrap + BDFDB.disCN.modalsubinner} tab-content" style="flex: 1 1 auto;">
-								<div class="${BDFDB.disCNS.flex + BDFDB.disCNS.flex2 + BDFDB.disCNS.horizontal + BDFDB.disCNS.horizontal2 + BDFDB.disCNS.directionrow + BDFDB.disCNS.justifystart + BDFDB.disCNS.aligncenter + BDFDB.disCNS.nowrap + BDFDB.disCN.marginbottom20}" style="flex: 0 0 auto;">
-									<h3 class="${BDFDB.disCNS.titledefault + BDFDB.disCNS.title + BDFDB.disCNS.marginreset + BDFDB.disCNS.weightmedium + BDFDB.disCNS.size16 + BDFDB.disCNS.height24 + BDFDB.disCN.flexchild}" style="flex: 1 1 auto; width: 800px;">To expierence PluginRepo in the best way. I would recommend you to enable BD intern reload function, that way all downloaded files are loaded into Discord without the need to reload.</h3>
+							<div tab="settings" class="${BDFDB.disCNS.flex + BDFDB.disCNS.vertical + BDFDB.disCNS.justifystart + BDFDB.disCNS.alignstretch + BDFDB.disCNS.nowrap + BDFDB.disCN.modalsubinner} tab-content" style="flex: 1 1 auto;">
+								<div class="${BDFDB.disCNS.flex + BDFDB.disCNS.horizontal + BDFDB.disCNS.justifystart + BDFDB.disCNS.aligncenter + BDFDB.disCNS.nowrap + BDFDB.disCN.marginbottom20}" style="flex: 0 0 auto;">
+									<h3 class="${BDFDB.disCNS.titledefault + BDFDB.disCNS.marginreset + BDFDB.disCNS.weightmedium + BDFDB.disCNS.titlesize16 + BDFDB.disCNS.height24 + BDFDB.disCN.flexchild}" style="flex: 1 1 auto; width: 800px;">To experience PluginRepo in the best way. I would recommend you to enable BD intern reload function, that way all downloaded files are loaded into Discord without the need to reload.</h3>
 								</div>
-								<div class="${BDFDB.disCNS.flex + BDFDB.disCNS.flex2 + BDFDB.disCNS.horizontal + BDFDB.disCNS.horizontal2 + BDFDB.disCNS.directionrow + BDFDB.disCNS.justifystart + BDFDB.disCNS.aligncenter + BDFDB.disCNS.nowrap + BDFDB.disCN.marginbottom20}" style="flex: 0 0 auto;">
-									<h3 class="${BDFDB.disCNS.titledefault + BDFDB.disCNS.title + BDFDB.disCNS.marginreset + BDFDB.disCNS.weightmedium + BDFDB.disCNS.size16 + BDFDB.disCNS.height24 + BDFDB.disCN.flexchild}" style="flex: 1 1 auto;">Hide updated Plugins.</h3>
+								<div class="${BDFDB.disCNS.flex + BDFDB.disCNS.horizontal + BDFDB.disCNS.justifystart + BDFDB.disCNS.aligncenter + BDFDB.disCNS.nowrap + BDFDB.disCN.marginbottom20}" style="flex: 0 0 auto;">
+									<h3 class="${BDFDB.disCNS.titledefault + BDFDB.disCNS.marginreset + BDFDB.disCNS.weightmedium + BDFDB.disCNS.titlesize16 + BDFDB.disCNS.height24 + BDFDB.disCN.flexchild}" style="flex: 1 1 auto;">Hide updated Plugins.</h3>
 									<div class="${BDFDB.disCNS.flexchild + BDFDB.disCNS.switchenabled + BDFDB.disCNS.switch + BDFDB.disCNS.switchvalue + BDFDB.disCNS.switchsizedefault + BDFDB.disCNS.switchsize + BDFDB.disCN.switchthemedefault}" style="flex: 0 0 auto;">
 										<input type="checkbox" value="updated" class="${BDFDB.disCNS.switchinnerenabled + BDFDB.disCN.switchinner} hide-checkbox" id="input-hideupdated">
 									</div>
 								</div>
-								<div class="${BDFDB.disCNS.flex + BDFDB.disCNS.flex2 + BDFDB.disCNS.horizontal + BDFDB.disCNS.horizontal2 + BDFDB.disCNS.directionrow + BDFDB.disCNS.justifystart + BDFDB.disCNS.aligncenter + BDFDB.disCNS.nowrap + BDFDB.disCN.marginbottom20}" style="flex: 0 0 auto;">
-									<h3 class="${BDFDB.disCNS.titledefault + BDFDB.disCNS.title + BDFDB.disCNS.marginreset + BDFDB.disCNS.weightmedium + BDFDB.disCNS.size16 + BDFDB.disCNS.height24 + BDFDB.disCN.flexchild}" style="flex: 1 1 auto;">Hide outdated Plugins.</h3>
+								<div class="${BDFDB.disCNS.flex + BDFDB.disCNS.horizontal + BDFDB.disCNS.justifystart + BDFDB.disCNS.aligncenter + BDFDB.disCNS.nowrap + BDFDB.disCN.marginbottom20}" style="flex: 0 0 auto;">
+									<h3 class="${BDFDB.disCNS.titledefault + BDFDB.disCNS.marginreset + BDFDB.disCNS.weightmedium + BDFDB.disCNS.titlesize16 + BDFDB.disCNS.height24 + BDFDB.disCN.flexchild}" style="flex: 1 1 auto;">Hide outdated Plugins.</h3>
 									<div class="${BDFDB.disCNS.flexchild + BDFDB.disCNS.switchenabled + BDFDB.disCNS.switch + BDFDB.disCNS.switchvalue + BDFDB.disCNS.switchsizedefault + BDFDB.disCNS.switchsize + BDFDB.disCN.switchthemedefault}" style="flex: 0 0 auto;">
 										<input type="checkbox" value="outdated" class="${BDFDB.disCNS.switchinnerenabled + BDFDB.disCN.switchinner} hide-checkbox" id="input-hideoutdated">
 									</div>
 								</div>
-								<div class="${BDFDB.disCNS.flex + BDFDB.disCNS.flex2 + BDFDB.disCNS.horizontal + BDFDB.disCNS.horizontal2 + BDFDB.disCNS.directionrow + BDFDB.disCNS.justifystart + BDFDB.disCNS.aligncenter + BDFDB.disCNS.nowrap + BDFDB.disCN.marginbottom20}" style="flex: 0 0 auto;">
-									<h3 class="${BDFDB.disCNS.titledefault + BDFDB.disCNS.title + BDFDB.disCNS.marginreset + BDFDB.disCNS.weightmedium + BDFDB.disCNS.size16 + BDFDB.disCNS.height24 + BDFDB.disCN.flexchild}" style="flex: 1 1 auto;">Hide downloadable Plugins.</h3>
+								<div class="${BDFDB.disCNS.flex + BDFDB.disCNS.horizontal + BDFDB.disCNS.justifystart + BDFDB.disCNS.aligncenter + BDFDB.disCNS.nowrap + BDFDB.disCN.marginbottom20}" style="flex: 0 0 auto;">
+									<h3 class="${BDFDB.disCNS.titledefault + BDFDB.disCNS.marginreset + BDFDB.disCNS.weightmedium + BDFDB.disCNS.titlesize16 + BDFDB.disCNS.height24 + BDFDB.disCN.flexchild}" style="flex: 1 1 auto;">Hide downloadable Plugins.</h3>
 									<div class="${BDFDB.disCNS.flexchild + BDFDB.disCNS.switchenabled + BDFDB.disCNS.switch + BDFDB.disCNS.switchvalue + BDFDB.disCNS.switchsizedefault + BDFDB.disCNS.switchsize + BDFDB.disCN.switchthemedefault}" style="flex: 0 0 auto;">
 										<input type="checkbox" value="downloadable" class="${BDFDB.disCNS.switchinnerenabled + BDFDB.disCN.switchinner} hide-checkbox" id="input-hidedownloadable">
 									</div>
 								</div>
-								<div id="RNMoption" class="${BDFDB.disCNS.flex + BDFDB.disCNS.flex2 + BDFDB.disCNS.horizontal + BDFDB.disCNS.horizontal2 + BDFDB.disCNS.directionrow + BDFDB.disCNS.justifystart + BDFDB.disCNS.aligncenter + BDFDB.disCNS.nowrap + BDFDB.disCN.marginbottom20}" style="flex: 0 0 auto;">
-									<h3 class="${BDFDB.disCNS.titledefault + BDFDB.disCNS.title + BDFDB.disCNS.marginreset + BDFDB.disCNS.weightmedium + BDFDB.disCNS.size16 + BDFDB.disCNS.height24 + BDFDB.disCN.flexchild}" style="flex: 1 1 auto;">Start Plugin after Download (Automatic Loading needed)</h3>
+								<div id="RNMoption" class="${BDFDB.disCNS.flex + BDFDB.disCNS.horizontal + BDFDB.disCNS.justifystart + BDFDB.disCNS.aligncenter + BDFDB.disCNS.nowrap + BDFDB.disCN.marginbottom20}" style="flex: 0 0 auto;">
+									<h3 class="${BDFDB.disCNS.titledefault + BDFDB.disCNS.marginreset + BDFDB.disCNS.weightmedium + BDFDB.disCNS.titlesize16 + BDFDB.disCNS.height24 + BDFDB.disCN.flexchild}" style="flex: 1 1 auto;">Start Plugin after Download (Automatic Loading needed)</h3>
 									<div class="${BDFDB.disCNS.flexchild + BDFDB.disCNS.switchenabled + BDFDB.disCNS.switch + BDFDB.disCNS.switchvalue + BDFDB.disCNS.switchsizedefault + BDFDB.disCNS.switchsize + BDFDB.disCN.switchthemedefault}" style="flex: 0 0 auto;">
 										<input type="checkbox" class="${BDFDB.disCNS.switchinnerenabled + BDFDB.disCN.switchinner}" id="input-rnmstart">
 									</div>
@@ -177,9 +173,9 @@ class PluginRepo {
 		this.sortPopoutMarkup =
 			`<div class="${BDFDB.disCNS.popout + BDFDB.disCNS.popoutbottomright + BDFDB.disCN.popoutnoshadow} pluginrepo-sort-popout" style="position: fixed; z-index: 1100; visibility: visible; transform: translateX(-100%) translateY(0%) translateZ(0px);">
 				<div>
-					<div class="${BDFDB.disCN.contextmenu} quickSelectPopout">
+					<div class="${BDFDB.disCN.contextmenu} BDFDB-quickSelectPopout">
 						<div class="${BDFDB.disCN.contextmenuitemgroup}">
-							${Object.keys(this.sortings.sort).map((key, i) => `<div option="${key}" class="${BDFDB.disCN.contextmenuitem}">${this.sortings.sort[key]}</div>`).join("")}
+							${Object.keys(this.sortings.sort).map((key, i) => `<div option="${key}" class="${BDFDB.disCNS.contextmenuitem + BDFDB.disCN.contextmenuitemclickable}">${this.sortings.sort[key]}</div>`).join("")}
 						</div>
 					</div>
 				</div>
@@ -188,9 +184,9 @@ class PluginRepo {
 		this.orderPopoutMarkup =
 			`<div class="${BDFDB.disCNS.popout + BDFDB.disCNS.popoutbottomright + BDFDB.disCN.popoutnoshadow} pluginrepo-order-popout" style="position: fixed; z-index: 1100; visibility: visible; transform: translateX(-100%) translateY(0%) translateZ(0px);">
 				<div>
-					<div class="${BDFDB.disCN.contextmenu} quickSelectPopout">
+					<div class="${BDFDB.disCN.contextmenu} BDFDB-quickSelectPopout">
 						<div class="${BDFDB.disCN.contextmenuitemgroup}">
-							${Object.keys(this.sortings.order).map((key, i) => `<div option="${key}" class="${BDFDB.disCN.contextmenuitem}">${this.sortings.order[key]}</div>`).join("")}
+							${Object.keys(this.sortings.order).map((key, i) => `<div option="${key}" class="${BDFDB.disCNS.contextmenuitem + BDFDB.disCN.contextmenuitemclickable}">${this.sortings.order[key]}</div>`).join("")}
 						</div>
 					</div>
 				</div>
@@ -248,19 +244,19 @@ class PluginRepo {
 	getSettingsPanel () {
 		if (!global.BDFDB || typeof BDFDB != "object" || !BDFDB.loaded || !this.started) return;
 		var settings = 	BDFDB.getAllData(this, "settings");
-		var settingshtml = `<div class="${this.name}-settings BDFDB-settings"><div class="${BDFDB.disCNS.titledefault + BDFDB.disCNS.title + BDFDB.disCNS.size18 + BDFDB.disCNS.height24 + BDFDB.disCNS.weightnormal + BDFDB.disCN.marginbottom8}">${this.name}</div><div class="BDFDB-settings-inner">`;
+		var settingshtml = `<div class="${this.name}-settings BDFDB-settings"><div class="${BDFDB.disCNS.titledefault + BDFDB.disCNS.titlesize18 + BDFDB.disCNS.height24 + BDFDB.disCNS.weightnormal + BDFDB.disCN.marginbottom8}">${this.name}</div><div class="BDFDB-settings-inner">`;
 		for (let key in settings) {
-			settingshtml += `<div class="${BDFDB.disCNS.flex + BDFDB.disCNS.flex2 + BDFDB.disCNS.horizontal + BDFDB.disCNS.horizontal2 + BDFDB.disCNS.directionrow + BDFDB.disCNS.justifystart + BDFDB.disCNS.aligncenter + BDFDB.disCNS.nowrap + BDFDB.disCN.marginbottom8}" style="flex: 1 1 auto;"><h3 class="${BDFDB.disCNS.titledefault + BDFDB.disCNS.title + BDFDB.disCNS.marginreset + BDFDB.disCNS.weightmedium + BDFDB.disCNS.size16 + BDFDB.disCNS.height24 + BDFDB.disCN.flexchild}" style="flex: 1 1 auto;">${this.defaults.settings[key].description}</h3><div class="${BDFDB.disCNS.flexchild + BDFDB.disCNS.switchenabled + BDFDB.disCNS.switch + BDFDB.disCNS.switchvalue + BDFDB.disCNS.switchsizedefault + BDFDB.disCNS.switchsize + BDFDB.disCN.switchthemedefault}" style="flex: 0 0 auto;"><input type="checkbox" value="settings ${key}" class="${BDFDB.disCNS.switchinnerenabled + BDFDB.disCN.switchinner} settings-switch"${settings[key] ? " checked" : ""}></div></div>`;
+			settingshtml += `<div class="${BDFDB.disCNS.flex + BDFDB.disCNS.horizontal + BDFDB.disCNS.justifystart + BDFDB.disCNS.aligncenter + BDFDB.disCNS.nowrap + BDFDB.disCN.marginbottom8}" style="flex: 1 1 auto;"><h3 class="${BDFDB.disCNS.titledefault + BDFDB.disCNS.marginreset + BDFDB.disCNS.weightmedium + BDFDB.disCNS.titlesize16 + BDFDB.disCNS.height24 + BDFDB.disCN.flexchild}" style="flex: 1 1 auto;">${this.defaults.settings[key].description}</h3><div class="${BDFDB.disCNS.flexchild + BDFDB.disCNS.switchenabled + BDFDB.disCNS.switch + BDFDB.disCNS.switchvalue + BDFDB.disCNS.switchsizedefault + BDFDB.disCNS.switchsize + BDFDB.disCN.switchthemedefault}" style="flex: 0 0 auto;"><input type="checkbox" value="settings ${key}" class="${BDFDB.disCNS.switchinnerenabled + BDFDB.disCN.switchinner} settings-switch"${settings[key] ? " checked" : ""}></div></div>`;
 		}
-		settingshtml += `<div class="${BDFDB.disCNS.flex + BDFDB.disCNS.flex2 + BDFDB.disCNS.horizontal + BDFDB.disCNS.horizontal2 + BDFDB.disCNS.directionrow + BDFDB.disCNS.justifystart + BDFDB.disCNS.aligncenter + BDFDB.disCNS.nowrap + BDFDB.disCN.marginbottom8}" style="flex: 0 0 auto;"><h3 class="${BDFDB.disCNS.titledefault + BDFDB.disCNS.title + BDFDB.disCNS.marginreset + BDFDB.disCNS.weightmedium + BDFDB.disCNS.size16 + BDFDB.disCNS.height24 + BDFDB.disCN.flexchild}" style="flex: 0 0 auto;">Add Plugin:</h3><input type="text" placeholder="Insert Raw Github Link of Plugin (https://raw.githubusercontent.com/...)" class="${BDFDB.disCNS.inputdefault + BDFDB.disCNS.input + BDFDB.disCN.size16}" id="input-pluginurl" style="flex: 1 1 auto;"><button type="button" class="${BDFDB.disCNS.flexchild + BDFDB.disCNS.button + BDFDB.disCNS.buttonlookfilled + BDFDB.disCNS.buttoncolorbrand + BDFDB.disCNS.buttonsizemedium + BDFDB.disCN.buttongrow} btn-add btn-addplugin" style="flex: 0 0 auto;"><div class="${BDFDB.disCN.buttoncontents}"></div></button></div>`;
-		settingshtml += `<h3 class="${BDFDB.disCNS.titledefault + BDFDB.disCNS.title + BDFDB.disCNS.marginreset + BDFDB.disCNS.weightmedium + BDFDB.disCNS.size16 + BDFDB.disCNS.height24 + BDFDB.disCN.flexchild}" style="flex: 1 1 auto;">Your additional Plugin List:</h3><div class="BDFDB-settings-inner-list plugin-list ${BDFDB.disCN.marginbottom8}">`;
+		settingshtml += `<div class="${BDFDB.disCNS.flex + BDFDB.disCNS.horizontal + BDFDB.disCNS.justifystart + BDFDB.disCNS.aligncenter + BDFDB.disCNS.nowrap + BDFDB.disCN.marginbottom8}" style="flex: 0 0 auto;"><h3 class="${BDFDB.disCNS.titledefault + BDFDB.disCNS.marginreset + BDFDB.disCNS.weightmedium + BDFDB.disCNS.titlesize16 + BDFDB.disCNS.height24 + BDFDB.disCN.flexchild}" style="flex: 0 0 auto;">Add Plugin:</h3><input type="text" placeholder="Insert Raw Github Link of Plugin (https://raw.githubusercontent.com/...)" class="${BDFDB.disCNS.inputdefault + BDFDB.disCNS.input + BDFDB.disCN.titlesize16}" id="input-pluginurl" style="flex: 1 1 auto;"><button type="button" class="${BDFDB.disCNS.flexchild + BDFDB.disCNS.button + BDFDB.disCNS.buttonlookfilled + BDFDB.disCNS.buttoncolorbrand + BDFDB.disCNS.buttonsizemedium + BDFDB.disCN.buttongrow} btn-add btn-addplugin" style="flex: 0 0 auto;"><div class="${BDFDB.disCN.buttoncontents}"></div></button></div>`;
+		settingshtml += `<h3 class="${BDFDB.disCNS.titledefault + BDFDB.disCNS.marginreset + BDFDB.disCNS.weightmedium + BDFDB.disCNS.titlesize16 + BDFDB.disCNS.height24 + BDFDB.disCN.flexchild}" style="flex: 1 1 auto;">Your additional Plugin List:</h3><div class="BDFDB-settings-inner-list plugin-list ${BDFDB.disCN.marginbottom8}">`;
 		var ownlist = BDFDB.loadData("ownlist", this, "ownlist") || [];
 		for (let url of ownlist) {
-			settingshtml += `<div class="${BDFDB.disCNS.flex + BDFDB.disCNS.flex2 + BDFDB.disCNS.vertical + BDFDB.disCNS.directionrow + BDFDB.disCNS.justifystart + BDFDB.disCNS.alignstretch + BDFDB.disCNS.nowrap + BDFDB.disCNS.margintop4 + BDFDB.disCNS.marginbottom4 + BDFDB.disCN.hovercard}"><div class="${BDFDB.disCN.hovercardinner}"><div class="${BDFDB.disCNS.description + BDFDB.disCNS.formtext + BDFDB.disCNS.note + BDFDB.disCNS.margintop4 + BDFDB.disCNS.modedefault + BDFDB.disCNS.primary + BDFDB.disCN.ellipsis} entryurl">${url}</div></div><div class="${BDFDB.disCN.hovercardbutton} remove-plugin"></div></div>`;
+			settingshtml += `<div class="${BDFDB.disCNS.flex + BDFDB.disCNS.vertical + BDFDB.disCNS.directionrow + BDFDB.disCNS.justifystart + BDFDB.disCNS.alignstretch + BDFDB.disCNS.nowrap + BDFDB.disCNS.margintop4 + BDFDB.disCNS.marginbottom4 + BDFDB.disCN.hovercard}"><div class="${BDFDB.disCN.hovercardinner}"><div class="${BDFDB.disCNS.description + BDFDB.disCNS.formtext + BDFDB.disCNS.note + BDFDB.disCNS.margintop4 + BDFDB.disCNS.modedefault + BDFDB.disCNS.primary + BDFDB.disCN.ellipsis} entryurl">${url}</div></div><div class="${BDFDB.disCN.hovercardbutton} remove-plugin"></div></div>`;
 		}
 		settingshtml += `</div>`;
-		settingshtml += `<div class="${BDFDB.disCNS.flex + BDFDB.disCNS.flex2 + BDFDB.disCNS.horizontal + BDFDB.disCNS.horizontal2 + BDFDB.disCNS.directionrow + BDFDB.disCNS.justifystart + BDFDB.disCNS.aligncenter + BDFDB.disCNS.nowrap + BDFDB.disCN.marginbottom8}" style="flex: 0 0 auto;"><h3 class="${BDFDB.disCNS.titledefault + BDFDB.disCNS.title + BDFDB.disCNS.marginreset + BDFDB.disCNS.weightmedium + BDFDB.disCNS.size16 + BDFDB.disCNS.height24 + BDFDB.disCN.flexchild}" style="flex: 1 1 auto;">Force all Plugins to be fetched again.</h3><button type="button" class="${BDFDB.disCNS.flexchild + BDFDB.disCNS.button + BDFDB.disCNS.buttonlookfilled + BDFDB.disCNS.buttoncolorbrand + BDFDB.disCNS.buttonsizemedium + BDFDB.disCN.buttongrow} refresh-button" style="flex: 0 0 auto;"><div class="${BDFDB.disCN.buttoncontents}">Refresh</div></button></div>`;
-		settingshtml += `<div class="${BDFDB.disCNS.flex + BDFDB.disCNS.flex2 + BDFDB.disCNS.horizontal + BDFDB.disCNS.horizontal2 + BDFDB.disCNS.directionrow + BDFDB.disCNS.justifystart + BDFDB.disCNS.aligncenter + BDFDB.disCNS.nowrap + BDFDB.disCN.marginbottom20}" style="flex: 0 0 auto;"><h3 class="${BDFDB.disCNS.titledefault + BDFDB.disCNS.title + BDFDB.disCNS.marginreset + BDFDB.disCNS.weightmedium + BDFDB.disCNS.size16 + BDFDB.disCNS.height24 + BDFDB.disCN.flexchild}" style="flex: 1 1 auto;">Remove all added Plugins from your own list.</h3><button type="button" class="${BDFDB.disCNS.flexchild + BDFDB.disCNS.button + BDFDB.disCNS.buttonlookfilled + BDFDB.disCNS.buttoncolorred + BDFDB.disCNS.buttonsizemedium + BDFDB.disCN.buttongrow} remove-all" style="flex: 0 0 auto;"><div class="${BDFDB.disCN.buttoncontents}">Reset</div></button></div>`;
+		settingshtml += `<div class="${BDFDB.disCNS.flex + BDFDB.disCNS.horizontal + BDFDB.disCNS.justifystart + BDFDB.disCNS.aligncenter + BDFDB.disCNS.nowrap + BDFDB.disCN.marginbottom8}" style="flex: 0 0 auto;"><h3 class="${BDFDB.disCNS.titledefault + BDFDB.disCNS.marginreset + BDFDB.disCNS.weightmedium + BDFDB.disCNS.titlesize16 + BDFDB.disCNS.height24 + BDFDB.disCN.flexchild}" style="flex: 1 1 auto;">Force all Plugins to be fetched again.</h3><button type="button" class="${BDFDB.disCNS.flexchild + BDFDB.disCNS.button + BDFDB.disCNS.buttonlookfilled + BDFDB.disCNS.buttoncolorbrand + BDFDB.disCNS.buttonsizemedium + BDFDB.disCN.buttongrow} refresh-button" style="flex: 0 0 auto;"><div class="${BDFDB.disCN.buttoncontents}">Refresh</div></button></div>`;
+		settingshtml += `<div class="${BDFDB.disCNS.flex + BDFDB.disCNS.horizontal + BDFDB.disCNS.justifystart + BDFDB.disCNS.aligncenter + BDFDB.disCNS.nowrap + BDFDB.disCN.marginbottom20}" style="flex: 0 0 auto;"><h3 class="${BDFDB.disCNS.titledefault + BDFDB.disCNS.marginreset + BDFDB.disCNS.weightmedium + BDFDB.disCNS.titlesize16 + BDFDB.disCNS.height24 + BDFDB.disCN.flexchild}" style="flex: 1 1 auto;">Remove all added Plugins from your own list.</h3><button type="button" class="${BDFDB.disCNS.flexchild + BDFDB.disCNS.button + BDFDB.disCNS.buttonlookfilled + BDFDB.disCNS.buttoncolorred + BDFDB.disCNS.buttonsizemedium + BDFDB.disCN.buttongrow} remove-all" style="flex: 0 0 auto;"><div class="${BDFDB.disCN.buttoncontents}">Reset</div></button></div>`;
 		settingshtml += `</div></div>`;
 
 		let settingspanel = BDFDB.htmlToElement(settingshtml);
@@ -297,7 +293,7 @@ class PluginRepo {
 			document.head.appendChild(libraryScript);
 			this.libLoadTimeout = setTimeout(() => {
 				libraryScript.remove();
-				require("request")("https://mwittrien.github.io/BetterDiscordAddons/Plugins/BDFDB.js", (error, response, body) => {
+				BDFDB.LibraryRequires.request("https://mwittrien.github.io/BetterDiscordAddons/Plugins/BDFDB.js", (error, response, body) => {
 					if (body) {
 						libraryScript = document.createElement("script");
 						libraryScript.setAttribute("id", "BDFDBLibraryScript");
@@ -337,7 +333,7 @@ class PluginRepo {
 			clearTimeout(this.loading.timeout);
 
 			BDFDB.removeEles(".pluginrepo-notice",".bd-pluginrepobutton",".pluginrepo-loadingicon",BDFDB.dotCN.app + " > .repo-loadingwrapper:empty");
-			
+
 			var frame = document.querySelector("iframe.discordSandbox");
 			if (frame) {
 				window.removeEventListener("message", frame.messageReceived);
@@ -351,29 +347,22 @@ class PluginRepo {
 
 	// begin of own functions
 
-	onUserSettingsCogContextMenu (instance, menu) {
-		let observer = new MutationObserver(changes => {
-			changes.forEach(change => {
-				if (change.addedNodes) change.addedNodes.forEach(node => {
-					if (node.tagName && BDFDB.containsClass(node, BDFDB.disCN.contextmenu) && BDFDB.getReactValue(node, "return.return.return.memoizedProps.label") == "BandagedBD" && !node.querySelector(".pluginrepo-item")) {
-						let item = node.querySelectorAll(BDFDB.dotCN.contextmenuitem);
-						item = item[item.length-1];
-						var settingsContextEntry = BDFDB.htmlToElement(this.settingsContextEntryMarkup);
-						settingsContextEntry.addEventListener("click", () => {
-							if (!this.loading.is) BDFDB.closeContextMenu(menu);
-							this.openPluginRepoModal();
-						});
-						item.parentElement.insertBefore(settingsContextEntry, item.nextElementSibling);
-						var menurects = BDFDB.getRects(menu);
-						node.style.setProperty("top", (menurects.top - BDFDB.getRects(node).height + menurects.height) + "px");
-					}
-				});
+	onUserSettingsCogContextMenu (instance, menu, returnvalue) {
+		setImmediate(() => {for (let child of returnvalue.props.children) if (child && child.props && child.props.label == "BandagedBD" && Array.isArray(child.props.render)) {
+			const repoItem = BDFDB.React.createElement(BDFDB.LibraryComponents.ContextMenuItem, {
+				label: "Plugin Repo",
+				className: `BDFDB-contextMenuItem ${this.name}-contextMenuItem ${this.name}-repo-contextMenuItem`,
+				action: e => {
+					if (!this.loading.is) BDFDB.closeContextMenu(menu);
+					this.openPluginRepoModal();
+				}
 			});
-		});
-		observer.observe(menu, {childList: true, subtree:true});
+			child.props.render.push(repoItem);
+			break;
+		}});
 	}
 
-	processV2CList (instance, wrapper) {
+	processV2CList (instance, wrapper, returnvalue) {
 		if (!document.querySelector(".bd-pluginrepobutton") && window.PluginUpdates && window.PluginUpdates.plugins && instance._reactInternalFiber.key && instance._reactInternalFiber.key.split("-")[0] == "plugin") {
 			var folderbutton = document.querySelector(BDFDB.dotCN._repofolderbutton);
 			if (folderbutton) {
@@ -399,7 +388,7 @@ class PluginRepo {
 			if (!ownlist.includes(url)) {
 				ownlist.push(url);
 				BDFDB.saveData("ownlist", ownlist, this, "ownlist");
-				let entry = BDFDB.htmlToElement(`<div class="${BDFDB.disCNS.flex + BDFDB.disCNS.flex2 + BDFDB.disCNS.vertical + BDFDB.disCNS.directionrow + BDFDB.disCNS.justifystart + BDFDB.disCNS.alignstretch + BDFDB.disCNS.nowrap + BDFDB.disCNS.margintop4 + BDFDB.disCNS.marginbottom4 + BDFDB.disCN.hovercard}"><div class="${BDFDB.disCN.hovercardinner}"><div class="${BDFDB.disCNS.description + BDFDB.disCNS.formtext + BDFDB.disCNS.note + BDFDB.disCNS.margintop4 + BDFDB.disCNS.modedefault + BDFDB.disCNS.primary + BDFDB.disCN.ellipsis} entryurl">${url}</div></div><div class="${BDFDB.disCN.hovercardbutton} remove-plugin"></div></div>`);
+				let entry = BDFDB.htmlToElement(`<div class="${BDFDB.disCNS.flex + BDFDB.disCNS.vertical + BDFDB.disCNS.directionrow + BDFDB.disCNS.justifystart + BDFDB.disCNS.alignstretch + BDFDB.disCNS.nowrap + BDFDB.disCNS.margintop4 + BDFDB.disCNS.marginbottom4 + BDFDB.disCN.hovercard}"><div class="${BDFDB.disCN.hovercardinner}"><div class="${BDFDB.disCNS.description + BDFDB.disCNS.formtext + BDFDB.disCNS.note + BDFDB.disCNS.margintop4 + BDFDB.disCNS.modedefault + BDFDB.disCNS.primary + BDFDB.disCN.ellipsis} entryurl">${url}</div></div><div class="${BDFDB.disCN.hovercardbutton} remove-plugin"></div></div>`);
 				BDFDB.addChildEventListener(entry, "click", ".remove-plugin", e => {this.removePluginFromOwnList(e);});
 				pluginList.appendChild(entry);
 			}
@@ -437,11 +426,11 @@ class PluginRepo {
 		pluginRepoModal.querySelector("#input-hidedownloadable").checked = hiddenSettings.downloadable || options.showOnlyOutdated;
 		if (!BDFDB.isRestartNoMoreEnabled()) pluginRepoModal.querySelector("#RNMoption").remove();
 		else pluginRepoModal.querySelector("#input-rnmstart").checked = BDFDB.loadData("RNMstart", this, "RNMstart");
-		
+
 		if (options.forcedSort && this.sortings.sort[options.forcedSort]) {
 			var sortinput = pluginRepoModal.querySelector(".sort-filter " + BDFDB.dotCN.quickselectvalue);
-			orderinput.innerText = this.sortings.sort[options.forcedSort];
-			orderinput.setAttribute('option', options.forcedSort);
+			sortinput.innerText = this.sortings.sort[options.forcedSort];
+			sortinput.setAttribute('option', options.forcedSort);
 		}
 		if (options.forcedOrder && this.sortings.order[options.forcedOrder]) {
 			var orderinput = pluginRepoModal.querySelector(".order-filter " + BDFDB.dotCN.quickselectvalue);
@@ -482,7 +471,7 @@ class PluginRepo {
 		pluginRepoModal.entries = {};
 		for (let url in this.loadedPlugins) {
 			let plugin = this.loadedPlugins[url];
-			let instPlugin = window.bdplugins[plugin.getName] ? window.bdplugins[plugin.getName].plugin : null;
+			let instPlugin = BDFDB.getPlugin(plugin.getName);
 			if (instPlugin && this.getString(instPlugin.getAuthor()).toUpperCase() == plugin.getAuthor.toUpperCase()) plugin.getState = this.getString(instPlugin.getVersion()) != plugin.getVersion ? 1 : 0;
 			else plugin.getState = 2;
 			let data = {
@@ -526,9 +515,6 @@ class PluginRepo {
 			if (favorize) BDFDB.saveData(data.url, true, this, "favorites");
 			else BDFDB.removeData(data.url, this, "favorites");
 			pluginRepoModal.entries[data.url] = data;
-		});
-		favbutton.addEventListener("mouseenter", e => {
-			BDFDB.createTooltip("Favorize", favbutton, {type:"top",selector:"pluginrepo-favicon-tooltip"});
 		});
 		let gitbutton = entry.querySelector(".gitIcon");
 		gitbutton.addEventListener("click", e => {
@@ -603,7 +589,7 @@ class PluginRepo {
 			let pos = entrypositions.indexOf(li.getAttribute("data-url"));
 			if (pos > -1) {
 				li.querySelectorAll(BDFDB.dotCNC._reponame + BDFDB.dotCNC._repoversion + BDFDB.dotCNC._repoauthor + BDFDB.dotCN._repodescription).forEach(ele => {
-					if (searchstring && searchstring.length > 2 || ele.querySelector(BDFDB.dotCN.highlight)) ele.innerHTML = BDFDB.highlightText(ele.innerText, searchstring); 
+					if (searchstring && searchstring.length > 2 || ele.querySelector(BDFDB.dotCN.highlight)) ele.innerHTML = BDFDB.highlightText(ele.innerText, searchstring);
 				});
 				li.style.setProperty("order", pos, "important");
 			}
@@ -621,8 +607,7 @@ class PluginRepo {
 		var seps = ["\"", "\'", "\`"];
 		var newentriesdata = BDFDB.loadAllData(this, "newentriesdata"), ownlist = BDFDB.loadData("ownlist", this, "ownlist") || [];
 		this.cachedPlugins = (newentriesdata.urlbase64 ? atob(newentriesdata.urlbase64).split("\n") : []).concat(ownlist);
-		let request = require("request");
-		request("https://mwittrien.github.io/BetterDiscordAddons/Plugins/PluginRepo/res/PluginList.txt", (error, response, result) => {
+		BDFDB.LibraryRequires.request("https://mwittrien.github.io/BetterDiscordAddons/Plugins/PluginRepo/res/PluginList.txt", (error, response, result) => {
 			if (!error && result) {
 				result = result.replace(/[\r\t]/g, "");
 				BDFDB.saveData("urlbase64", btoa(result), this, "newentriesdata");
@@ -708,7 +693,7 @@ class PluginRepo {
 				return;
 			}
 			let url = this.foundPlugins[i];
-			request(url, (error, response, body) => {
+			BDFDB.LibraryRequires.request(url, (error, response, body) => {
 				if (!response) {
 					if (url && BDFDB.getAllIndexes(this.foundPlugins, url).length < 2) this.foundPlugins.push(url);
 				}
@@ -744,7 +729,8 @@ class PluginRepo {
 								result = result[0].replace(new RegExp("\\\\" + separator, "g"), separator).split(separator);
 								if (result.length > 2) {
 									result = result.slice(1, -1).join(separator).replace(/\\n/g, "<br>").replace(/\\/g, "");
-									plugin[tag] = tag != "getVersion" ? result.charAt(0).toUpperCase() + result.slice(1) : result;
+									result = tag != "getVersion" ? result.charAt(0).toUpperCase() + result.slice(1) : result;
+									plugin[tag] = result ? result.trim() : result;
 								}
 							}
 						}
@@ -754,7 +740,7 @@ class PluginRepo {
 					if (valid) {
 						plugin.url = url;
 						this.loadedPlugins[url] = plugin;
-						var instPlugin = window.bdplugins[plugin.getName] ? window.bdplugins[plugin.getName].plugin : null;
+						let instPlugin = BDFDB.getPlugin(plugin.getName);
 						if (instPlugin && this.getString(instPlugin.getAuthor()).toUpperCase() == plugin.getAuthor.toUpperCase() && this.getString(instPlugin.getVersion()) != plugin.getVersion && PluginUpdates && PluginUpdates.plugins && !PluginUpdates.plugins[url]) outdated++;
 						if (!this.cachedPlugins.includes(url)) newentries++;
 					}
@@ -766,7 +752,7 @@ class PluginRepo {
 				i++;
 				var loadingtooltip = document.querySelector(".pluginrepo-loading-tooltip");
 				if (loadingtooltip) {
-					BDFDB.setInnerText(loadingtooltip.firstElementChild, this.getLoadingTooltipText());
+					BDFDB.setInnerText(loadingtooltip, this.getLoadingTooltipText());
 					BDFDB.updateTooltipPosition(loadingtooltip);
 				}
 				getPluginInfo(callback);
@@ -787,14 +773,14 @@ class PluginRepo {
 					else if (typeof e.data === "object" && e.data.origin == "DiscordPreview") {
 						switch (e.data.reason) {
 							case "OnLoad":
-								frame.contentWindow.postMessage({origin:"PluginRepo",reason:"OnLoad"},"*");
+								frame.contentWindow.postMessage({origin:"PluginRepo",reason:"OnLoad",classes:JSON.stringify(BDFDB.DiscordClasses),classmodules:JSON.stringify(BDFDB.DiscordClassModules)},"*");
 								callback();
 								break;
 						}
 					}
 				};
 				window.addEventListener("message", frame.messageReceived);
-				
+
 				document.body.appendChild(frame);
 			});
 		}
@@ -812,7 +798,7 @@ class PluginRepo {
 					if (BDFDB.isObject(plugin)) {
 						plugin.url = url;
 						this.loadedPlugins[url] = plugin;
-						var instPlugin = window.bdplugins[plugin.getName] ? window.bdplugins[plugin.getName].plugin : null;
+						let instPlugin = BDFDB.getPlugin(plugin.getName);
 						if (instPlugin && this.getString(instPlugin.getAuthor()).toUpperCase() == plugin.getAuthor.toUpperCase() && this.getString(instPlugin.getVersion()) != plugin.getVersion) outdated++;
 						if (!this.cachedPlugins.includes(url)) newentries++;
 					}
@@ -849,11 +835,11 @@ class PluginRepo {
 			}
 		}
 	}
-	
+
 	getLoadingTooltipText () {
 		return `Loading PluginRepo - [${Object.keys(this.loadedPlugins).length}/${Object.keys(this.grabbedPlugins).length}]`;
 	}
-	
+
 	getString (obj) {
 		var string = "";
 		if (typeof obj == "string") string = obj;
@@ -865,7 +851,7 @@ class PluginRepo {
 	}
 
 	checkForNewPlugins () {
-		require("request")("https://mwittrien.github.io/BetterDiscordAddons/Plugins/PluginRepo/res/PluginList.txt", (error, response, result) => {
+		BDFDB.LibraryRequires.request("https://mwittrien.github.io/BetterDiscordAddons/Plugins/PluginRepo/res/PluginList.txt", (error, response, result) => {
 			if (response && !BDFDB.equals(result.replace(/\t|\r/g, "").split("\n").filter(n => n), this.grabbedPlugins)) {
 				this.loading = {is:false, timeout:null, amount:0};
 				this.loadPlugins();
@@ -874,14 +860,14 @@ class PluginRepo {
 	}
 
 	downloadPlugin (data) {
-		require("request")(data.url, (error, response, body) => {
+		BDFDB.LibraryRequires.request(data.url, (error, response, body) => {
 			if (error) BDFDB.showToast(`Unable to download Plugin "${plugin.getName}".`, {type:"danger"});
 			else this.createPluginFile(data.url.split("/").pop(), body);
 		});
 	}
 
 	createPluginFile (filename, content) {
-		require("fs").writeFile(require("path").join(BDFDB.getPluginsFolder(), filename), content, (error) => {
+		BDFDB.LibraryRequires.fs.writeFile(BDFDB.LibraryRequires.path.join(BDFDB.getPluginsFolder(), filename), content, (error) => {
 			if (error) BDFDB.showToast(`Unable to save Plugin "${filename}".`, {type:"danger"});
 			else BDFDB.showToast(`Successfully saved Plugin "${filename}".`, {type:"success"});
 		});
@@ -889,16 +875,14 @@ class PluginRepo {
 
 	startPlugin (data) {
 		if (BDFDB.isPluginEnabled(data.name) == false) {
-			window.bdplugins[data.name].plugin.start();
-			window.pluginCookie[data.name] = true;
-			window.pluginModule.savePluginData();
+			window.pluginModule.startPlugin(data.name);
 			console.log(`%c[${this.name}]%c`, "color: #3a71c1; font-weight: 700;", "", "Started Plugin " + data.name + ".");
 		}
 	}
 
 	deletePluginFile (data) {
 		let filename = data.url.split("/").pop();
-		require("fs").unlink(require("path").join(BDFDB.getPluginsFolder(), filename), (error) => {
+		BDFDB.LibraryRequires.fs.unlink(BDFDB.LibraryRequires.path.join(BDFDB.getPluginsFolder(), filename), (error) => {
 			if (error) BDFDB.showToast(`Unable to delete Plugin "${filename}".`, {type:"danger"});
 			else BDFDB.showToast(`Successfully deleted Plugin "${filename}".`);
 		});
@@ -906,10 +890,7 @@ class PluginRepo {
 
 	stopPlugin (data) {
 		if (BDFDB.isPluginEnabled(data.name) == true) {
-			window.bdplugins[data.name].plugin.stop();
-			window.pluginCookie[data.name] = false;
-			delete window.bdplugins[data.name];
-			window.pluginModule.savePluginData();
+			window.pluginModule.stopPlugin(data.name);
 			console.log(`%c[${this.name}]%c`, "color: #3a71c1; font-weight: 700;", "", "Stopped Plugin " + data.name + ".");
 		}
 	}

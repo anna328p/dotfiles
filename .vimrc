@@ -100,6 +100,7 @@ call plug#begin('~/.vim/plugged')
   Plug 'slim-template/vim-slim'
   Plug 'vim-scripts/HTML-AutoCloseTag'
   Plug 'LnL7/vim-nix'
+  Plug 'entrez/roku.vim'
 
   " addons
   Plug 'scrooloose/nerdtree'

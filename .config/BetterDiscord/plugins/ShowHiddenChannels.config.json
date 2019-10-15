@@ -11,7 +11,7 @@
 		"showAllowedUsers": true,
 		"showDeniedRoles": true,
 		"showDeniedUsers": true,
-		"showTopic": false,
+		"showTopic": true,
 		"showChannelCategory": false,
 		"showVoiceUsers": true
 	},
@@ -30,12 +30,14 @@
 		"363382921744351234": true,
 		"551515299237855248": false,
 		"167661427862142976": true,
-		"522535157618442250": true
+		"522535157618442250": true,
+		"375436620578684930": false,
+		"332309672486895637": true
 	},
 	"amounts": {
 		"hoverDelay": 0
 	},
 	"changelog": {
-		"currentversion": "2.5.5"
+		"currentversion": "2.5.7"
 	}
 }

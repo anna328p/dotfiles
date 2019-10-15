@@ -1,22 +1,22 @@
 /**
  * @name Font
  * @author NFLD99
- * @version ersion auto updates
+ * @version 4
  * @description Support Server: https://nfld99.com/discord
  * @source https://github.com/NFLD99/Better-Discord
  * @website https://nfld99.com/
 */
 @import url(https://nfld99.github.io/Better-Discord/Source_Code/Addons/Use_Fonts/Yes.css);
 :root {
-  --Chat-Font-Used: 'Lobster Two', cursive;
+  --Font-Used: 'Lobster Two', cursive;
   /* https://nfld99.github.io/Better-Discord/Font_List.txt */
-  --Chat-Font-Size: 15px ;
+  --Font-Size: 15px ;
   /* medium|xx-small|x-small|small|large|x-large|xx-large|smaller|larger|length|initial|inherit; */
-  --Chat-Font-Style: normal ;
+  --Font-Style: normal ;
   /* normal|italic|oblique|initial|inherit; */
-  --Chat-Font-Weight: 200 ;
+  --Font-Weight: 200 ;
   /* normal|bold|bolder|lighter|number|initial|inherit */
-  --Chat-Font-Variant: normal ;
+  --Font-Variant: normal ;
   /* normal|small-caps|initial|inherit */
 }
 
@@ -28,5 +28,5 @@
 }
 
 .markup:not(code) {
-  font-size: var(--Chat-Font-Size)!important;
+  font-size: var(--Font-Size)!important;
 }
