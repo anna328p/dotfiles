@@ -84,7 +84,10 @@ function pygmentize_cat {
   done
 }
 command -v pygmentize > /dev/null && alias cat=pygmentize_cat
-alias cat=pygmentize_cat
+
+psgrep () {
+  ps aux | grep -v grep | grep $*
+}
 
 #-----------------------------------------------------------------------------#
 
@@ -130,5 +133,3 @@ sudo-command-line() {
 zle -N sudo-command-line
 # Defined shortcut keys: [Esc] [Esc]
 bindkey "\e\e" sudo-command-line
-
-#-----------------------------------------------------------------------------#

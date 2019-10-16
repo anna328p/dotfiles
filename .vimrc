@@ -74,10 +74,10 @@ call plug#begin('~/.vim/plugged')
   Plug 'shougo/neco-syntax'
   Plug 'fszymanski/deoplete-emoji'
   Plug 'SevereOverfl0w/deoplete-github'
-  Plug 'autozimu/LanguageClient-neovim', {
-        \     'branch': 'next',
-        \     'do': 'bash install.sh',
-        \   }
+"  Plug 'autozimu/LanguageClient-neovim', {
+"        \     'branch': 'next',
+"        \     'do': 'bash install.sh',
+"        \   }
   Plug 'neomake/neomake' "do full syntax checking for most languages
   Plug 'sebastianmarkow/deoplete-rust' "better rust support
   "Plug 'uplus/deoplete-solargraph'
