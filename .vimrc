@@ -100,7 +100,6 @@ call plug#begin('~/.vim/plugged')
   Plug 'slim-template/vim-slim'
   Plug 'vim-scripts/HTML-AutoCloseTag'
   Plug 'LnL7/vim-nix'
-  Plug 'entrez/roku.vim'
 
   " addons
   Plug 'scrooloose/nerdtree'
@@ -124,6 +123,7 @@ call plug#begin('~/.vim/plugged')
   Plug 'raimondi/delimitMate'
   Plug 'xolox/vim-easytags'
   Plug 'mhinz/vim-startify'
+  Plug 'moll/vim-bbye'
 
   Plug 'felikZ/ctrlp-py-matcher' "the normal one doesnt prioritize exact matches so we need the py addition
   Plug 'junegunn/fzf' "fuzzy jumping arround
@@ -131,7 +131,7 @@ call plug#begin('~/.vim/plugged')
   " misc
   Plug 'wellle/tmux-complete.vim'
   Plug 'xolox/vim-misc'
-
+Plug 'glacambre/firenvim', { 'do': function('firenvim#install') }
   "Plug 'isaacmorneau/vim-update-daily' "update vim plugins once a day
   Plug 'majutsushi/tagbar'
   Plug 'ntpeters/vim-better-whitespace'
