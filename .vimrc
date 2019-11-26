@@ -137,6 +137,10 @@ call plug#begin('~/.vim/plugged')
   Plug 'vim-scripts/a.vim'
   Plug 'vim-scripts/c.vim'
 
+  " session saving
+  Plug 'tpope/vim-obsession'
+  Plug 'dhruvasagar/vim-prosession'
+
   let s:has_discord = 0
   silent !which discord || which discord-canary
   if(!v:shell_error)
