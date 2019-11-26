@@ -1,19 +1,6 @@
 {
-	"settings": {
-		"showText": true,
-		"showVoice": true,
-		"showNews": true,
-		"showStore": true,
-		"showCategory": true,
-		"showForNormal": false,
-		"showAllowedRoles": true,
-		"showOverWrittenRoles": true,
-		"showAllowedUsers": true,
-		"showDeniedRoles": true,
-		"showDeniedUsers": true,
-		"showTopic": true,
-		"showChannelCategory": false,
-		"showVoiceUsers": true
+	"amounts": {
+		"hoverDelay": 0
 	},
 	"categorystatus": {
 		"193958989627785217": false,
@@ -32,12 +19,20 @@
 		"167661427862142976": true,
 		"522535157618442250": true,
 		"375436620578684930": false,
-		"332309672486895637": true
-	},
-	"amounts": {
-		"hoverDelay": 0
+		"332309672486895637": true,
+		"453998283174576133": false,
+		"619334948939366440": true,
+		"540260638992367676": false
 	},
 	"changelog": {
-		"currentversion": "2.5.7"
+		"currentversion": "2.6.5"
+	},
+	"settings": {
+		"showAnnouncement": true,
+		"showForNormal": false,
+		"showStore": true,
+		"showText": true,
+		"showVoice": true,
+		"sortNative": false
 	}
 }

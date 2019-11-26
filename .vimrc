@@ -131,10 +131,9 @@ call plug#begin('~/.vim/plugged')
   " misc
   Plug 'wellle/tmux-complete.vim'
   Plug 'xolox/vim-misc'
-Plug 'glacambre/firenvim', { 'do': function('firenvim#install') }
   "Plug 'isaacmorneau/vim-update-daily' "update vim plugins once a day
   Plug 'majutsushi/tagbar'
-  Plug 'ntpeters/vim-better-whitespace'
+"  Plug 'ntpeters/vim-better-whitespace'
   Plug 'vim-scripts/a.vim'
   Plug 'vim-scripts/c.vim'
 
@@ -143,6 +142,10 @@ Plug 'glacambre/firenvim', { 'do': function('firenvim#install') }
   if(!v:shell_error)
     let s:has_discord = 1
     Plug 'aurieh/discord.nvim', { 'do': ':UpdateRemotePlugins'}
+  endif
+
+  if has('nvim')
+    Plug 'glacambre/firenvim', { 'do': function('firenvim#install') }
   endif
 
 call plug#end()

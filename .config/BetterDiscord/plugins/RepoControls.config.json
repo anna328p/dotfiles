@@ -1,14 +1,14 @@
 {
-	"sortings": {
-		"order": "asc",
-		"sort": "name"
+	"changelog": {
+		"currentversion": "1.3.3"
 	},
 	"settings": {
 		"addEditButton": true,
 		"addDeleteButton": true,
 		"confirmDelete": true
 	},
-	"changelog": {
-		"currentversion": "1.3.1"
+	"sortings": {
+		"order": "asc",
+		"sort": "name"
 	}
 }

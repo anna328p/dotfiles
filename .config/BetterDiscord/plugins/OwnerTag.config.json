@@ -1,6 +1,10 @@
 {
 	"changelog": {
-		"currentversion": "1.1.8"
+		"currentversion": "1.2.3"
+	},
+	"inputs": {
+		"ownTagName": "Owner",
+		"ownAdminTagName": "Admin"
 	},
 	"settings": {
 		"addInChatWindow": true,
@@ -12,9 +16,5 @@
 		"useCrown": false,
 		"hideNativeCrown": true,
 		"addForAdmins": false
-	},
-	"inputs": {
-		"ownTagName": "Owner",
-		"ownAdminTagName": "Admin"
 	}
 }

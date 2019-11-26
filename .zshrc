@@ -6,8 +6,6 @@ export EDITOR=$(which nvim)
 export VISUAL=$(which nvim)
 export MAKEFLAGS="-j$(expr $(nproc) \+ 1)"
 export CDPATH=.:$HOME:$CDPATH
-export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=11'
-export BAT_THEME="TwoDark"
 export NIX_AUTO_RUN=1
 
 zmodload -a zsh/zpty zpty
@@ -29,6 +27,8 @@ alias :tabopen='tmux new-window'
 alias :e='vim'
 alias :w='sync'
 alias :q='exit'
+
+command -v podman >/dev/null && alias docker=podman
 
 export GPG_TTY=$(tty)
 
@@ -77,13 +77,6 @@ scratch () {
     nvim "$HOME/Documents/scratch/$1.md"
   fi
 }
-
-function pygmentize_cat {
-  for arg in "$@"; do
-    pygmentize -O style='monokai' -g "${arg}" 2> /dev/null || /usr/bin/env cat "${arg}"
-  done
-}
-command -v pygmentize > /dev/null && alias cat=pygmentize_cat
 
 psgrep () {
   ps aux | grep -v grep | grep $*

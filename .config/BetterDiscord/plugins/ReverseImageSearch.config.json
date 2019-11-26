@@ -1,6 +1,6 @@
 {
 	"changelog": {
-		"currentversion": "3.4.6"
+		"currentversion": "3.4.8"
 	},
 	"engines": {
 		"Baidu": true,
@@ -14,5 +14,10 @@
 		"WhatAnime": true,
 		"Yandex": true,
 		"_all": true
+	},
+	"settings": {
+		"addEmojiEntry": true,
+		"addGuildIconEntry": true,
+		"addUserAvatarEntry": true
 	}
 }
