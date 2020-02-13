@@ -7,7 +7,7 @@ const BetterImagePopups = (function() {
 	const script = {
 		name: "Better Image Popups",
 		file: "BetterImagePopups",
-		version: "1.5.3",
+		version: "1.5.7",
 		author: "Orrie",
 		desc: "Improves the image popups with full resolution images (if activated) and zooming from native size when clicking on them",
 		url: "https://github.com/Orrielel/BetterDiscordAddons/tree/master/Plugins/BetterImagePopups",
@@ -28,17 +28,16 @@ const BetterImagePopups = (function() {
 		css: {
 			script:`
 .bip-container {text-align: center;}
-.bip-container .scrollerWrap-2lJEkd {display: initial; min-height: unset;}
+.bip-container .scrollerWrap-2lJEkd {min-height: unset;}
 .bip-container .imageWrapper-2p5ogY img {position: static;}
 .bip-container .spinner-2enMB9 {position: absolute;}
-.bip-container .bip-scroller {margin-bottom: 6px; max-height: calc(100vh - 160px); max-width: calc(100vw - 160px); overflow: auto;}
+.bip-container .bip-scroller {display: flex; align-items: self-start; margin-bottom: 6px; max-height: calc(100vh - 220px); max-width: calc(100vw - 220px); overflow: auto;}
 .bip-container .bip-scroller img {vertical-align: middle;}
 .bip-container .bip-scroller::-webkit-scrollbar-corner {background: rgba(0,0,0,0);}
-.bip-container .bip-center {max-height: calc(100vh - 160px); max-width: calc(100vw - 160px);}
+.bip-container .bip-center {max-height: calc(100vh - 220px); max-width: calc(100vw - 220px);}
 .bip-container .bip-description {font-size: 16px; line-height: 24px;}
 .bip-container .bip-description > span {margin-left: 4px;}
 .bip-container .bip-description > span+span:before {content: "–"; font-weight: bold; margin-right: 4px;}
-.bip-container .downloadLink-1ywL9o {text-transform: capitalize;}
 .bip-container .bip-controls {margin: 0 auto; padding: 10px 25px; visibility: hidden;}
 .bip-container.bip-scaling .bip-controls {visibility: visible;}
 .bip-container .bip-controls > div:not(.tooltip-2QfLtc) {display: inline-block;}
@@ -47,6 +46,10 @@ const BetterImagePopups = (function() {
 .bip-container .orrie-tooltip .tooltipTop-XDDSxx {bottom: calc(100% + 10px);}
 .bip-container .orrie-tooltip .tooltipBottom-3ARrEK {top: 100%;}
 .bip-container.bip-scaling .scrollerWrap-2lJEkd .tooltip {display: none;}
+.bip-container .downloadLink-1ywL9o {align-self: unset; text-transform: capitalize;}
+.bip-container .bip-seperator {margin: 0 5px;}
+.bip-container span.downloadLink-1ywL9o {display: none;}
+
 // progress bar
 @-webkit-keyframes progress-bar-stripes {from {background-position: 40px 0;} to {background-position: 0 0;}}
 @keyframes progress-bar-stripes {from { background-position: 40px 0;} to { background-position: 0 0;}}
@@ -146,7 +149,8 @@ const BetterImagePopups = (function() {
 		if (img.src && wrapper.getElementsByTagName("VIDEO").length === 0) {
 			const proxy = img.src.split("?")[0],
 			container = wrapper.parentNode,
-			fullSrc = /\/external\//.test(proxy) ? proxy.match(/http[s\/\.][\w\.\-\/]+/g)[0].replace(/https\/|http\//,"https://") : proxy;
+			fullSrc = /\/external\//.test(proxy) ? proxy.match(/http[s\/\.][\w\.\-\/]+/g)[0].replace(/https\/|http\//,"https://") : proxy,
+			imageActions = container.querySelectorAll("a.downloadLink-1ywL9o");
 			wrapper.href = fullSrc;
 			wrapper.style.cssText = "";
 			wrapper.removeAttribute("target");
@@ -164,6 +168,13 @@ const BetterImagePopups = (function() {
 				}
 			}
 			node.classList.add("bip-container");
+			if (imageActions.length == 2) {
+				container.appendChild(_createElement("div", {className: "bip-actions"}, [
+					imageActions[0],
+					_createElement("div", {className: "downloadLink-1ywL9o bip-seperator", textContent: " | "}),
+					imageActions[1]
+				]));
+			}
 			container.appendChild(_createElement("div", {className: "bip-controls description-3_Ncsb orrie-tooltip orrie-relative"}, [
 				_createElement("div", {className: "bip-zoom downloadLink-1ywL9o", textContent: "-",
 					onclick(click) {
@@ -176,12 +187,12 @@ const BetterImagePopups = (function() {
 						zoomImage(click, "in", img, wrapper);
 					}
 				}),
-				!script.settings.tooltips ? _createElement("div", {className: "tooltip-2QfLtc tooltipBlack-PPG47z tooltipBottom-3ARrEK", innerHTML: "<div class='tooltipPointer-3ZfirK'></div>Shift = 50%, Ctrl = 100% and Alt = 200%"}) : ""
+				!script.settings.tooltips ? _createElement("div", {className: "tooltip-2QfLtc tooltipBrand-g03Nz8 tooltipBottom-3ARrEK", innerHTML: "<div class='tooltipPointer-3ZfirK'></div>Shift = 50%, Ctrl = 100% and Alt = 200%"}) : ""
 			]));
 			container.classList.add("orrie-tooltip", "orrie-relative");
 			container.insertBefore(_createElement("div", {className: "bip-description description-3_Ncsb userSelectText-1o1dQ7", innerHTML: `<span id='bip-info'></span><span id='bip-size' class='bip-toggled'></span><span id='bip-scale' class='bip-toggled'></span><span id='bip-zoom' class='bip-toggled'>Zoomed to <span class='bip-zoom-width'></span>px × <span class='bip-zoom-height'></span>px</span><span id='bip-error' class='bip-toggled'></span></span>`}), container.lastElementChild);
 			if (!script.settings.tooltips) {
-				container.appendChild(_createElement("div", {className: "tooltip-2QfLtc tooltipBlack-PPG47z tooltipTop-XDDSxx", innerHTML: `<div class='tooltipPointer-3ZfirK'></div>${script.settings.fullRes && script.settings.onClick ? "Click the image to load full resolution, then click the image to zoom": "Click the image to zoom"}`}));
+				container.appendChild(_createElement("div", {className: "tooltip-2QfLtc tooltipBrand-g03Nz8 tooltipTop-XDDSxx", innerHTML: `<div class='tooltipPointer-3ZfirK'></div>${script.settings.fullRes && script.settings.onClick ? "Click the image to load full resolution, then click the image to zoom": "Click the image to zoom"}`}));
 			}
 			img.classList.add("bip-center");
 			img.style.cssText = "";

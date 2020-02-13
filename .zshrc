@@ -7,6 +7,7 @@ export VISUAL=$(which nvim)
 export MAKEFLAGS="-j$(expr $(nproc) \+ 1)"
 export CDPATH=.:$HOME:$CDPATH
 export NIX_AUTO_RUN=1
+export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=245"
 
 zmodload -a zsh/zpty zpty
 
@@ -126,3 +127,5 @@ sudo-command-line() {
 zle -N sudo-command-line
 # Defined shortcut keys: [Esc] [Esc]
 bindkey "\e\e" sudo-command-line
+
+which direnv && eval "$(direnv hook zsh)"
