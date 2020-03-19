@@ -1,8 +1,0 @@
-//META{"name":"Fira Sans","description":"Replace original Discord font with Fira Sans","author":"cyckl#5289","version":"1.0"}*//{}
-
-@import url('https://fonts.googleapis.com/css?family=Fira+Sans');
-
-*
-{
-    font-family: "Fira Sans"!important;
-}
