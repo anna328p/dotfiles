@@ -1,6 +1,6 @@
 {
-	"translators": {
-		"useGoogle": true
+	"changelog": {
+		"currentversion": "1.7.7"
 	},
 	"choices": {
 		"inputContext": "auto",
@@ -12,7 +12,7 @@
 		"addTranslateButton": true,
 		"sendOriginalMessage": false
 	},
-	"changelog": {
-		"currentversion": "1.6.8"
+	"translators": {
+		"useGoogle": true
 	}
 }

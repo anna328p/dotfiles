@@ -85,8 +85,14 @@ function pygmentize_cat {
 }
 command -v pygmentize > /dev/null && alias cat=pygmentize_cat
 
-psgrep () {
+function psgrep {
   ps aux | grep -v grep | grep $*
+}
+
+function try {
+  until bash -c "$*"; do
+    sleep 2
+  done
 }
 
 #-----------------------------------------------------------------------------#
@@ -100,7 +106,7 @@ if [[ -f $DIRSTACKFILE ]] && [[ $#dirstack -eq 0 ]]; then
   [[ -d $dirstack[1] ]] && cd $dirstack[1]
 fi
 setopt clobber
-chpwd() {
+function chpwd {
 	  print -l $PWD ${(u)dirstack} >$DIRSTACKFILE
 }
 
@@ -116,7 +122,7 @@ setopt AUTO_PUSHD PUSHD_SILENT PUSHD_TO_HOME
 
 #-----------------------------------------------------------------------------#
 
-sudo-command-line() {
+function sudo-command-line {
     [[ -z $BUFFER ]] && zle up-history
     if [[ $BUFFER == sudo\ * ]]; then
         LBUFFER="${LBUFFER#sudo }"

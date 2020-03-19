@@ -1,6 +1,12 @@
 {
+	"changelog": {
+		"currentversion": "1.3.6"
+	},
 	"choices": {
 		"creationDateLang": "own"
+	},
+	"formats": {
+		"ownFormat": "$year-$month-$day $hour:$minute:$second"
 	},
 	"settings": {
 		"showInChat": true,
@@ -12,11 +18,5 @@
 		"cutSeconds": false,
 		"forceZeros": false,
 		"otherOrder": false
-	},
-	"formats": {
-		"ownFormat": "$year-$month-$day $hour:$minute:$second"
-	},
-	"changelog": {
-		"currentversion": "1.3.5"
 	}
 }
