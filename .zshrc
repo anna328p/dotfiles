@@ -6,9 +6,8 @@ export EDITOR=$(which nvim)
 export VISUAL=$(which nvim)
 export MAKEFLAGS="-j$(expr $(nproc) \+ 1)"
 export CDPATH=.:$HOME:$CDPATH
-export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=11'
-export BAT_THEME="TwoDark"
 export NIX_AUTO_RUN=1
+export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=245"
 
 zmodload -a zsh/zpty zpty
 
@@ -30,14 +29,15 @@ alias :e='vim'
 alias :w='sync'
 alias :q='exit'
 
+command -v podman >/dev/null && alias docker=podman
+
 export GPG_TTY=$(tty)
 
-mkcd () {
-  mkdir -p $*
-  cd $*
+function mkcd {
+  mkdir -p $* && cd $*
 }
 
-urlencode() {
+function urlencode {
   local string="${1}"
   local strlen=${#string}
   local encoded=""
@@ -54,7 +54,7 @@ urlencode() {
   echo -n "${encoded}"
 }
 
-shove () {
+function shove {
   filename=/tmp/shove-$RAND.txt
 
   scp $* image-upload@dk0.us:/var/www/files/uploads
@@ -65,11 +65,11 @@ shove () {
   xclip -sel clip < $filename
 }
 
-rain () {
+function rain {
   curl -s https://isitraining.in/Sammamish | grep result | grep -oP '(?<=\>).+(?=\<)' --color=never
 }
 
-scratch () {
+function scratch {
   mkdir -p "$HOME/Documents/scratch"
   if [ -z "$1" ]; then
     nvim "$HOME/Documents/scratch"
@@ -77,13 +77,6 @@ scratch () {
     nvim "$HOME/Documents/scratch/$1.md"
   fi
 }
-
-function pygmentize_cat {
-  for arg in "$@"; do
-    pygmentize -O style='monokai' -g "${arg}" 2> /dev/null || /usr/bin/env cat "${arg}"
-  done
-}
-command -v pygmentize > /dev/null && alias cat=pygmentize_cat
 
 function psgrep {
   ps aux | grep -v grep | grep $*
@@ -107,7 +100,7 @@ if [[ -f $DIRSTACKFILE ]] && [[ $#dirstack -eq 0 ]]; then
 fi
 setopt clobber
 function chpwd {
-	  print -l $PWD ${(u)dirstack} >$DIRSTACKFILE
+  print -l $PWD ${(u)dirstack} >$DIRSTACKFILE
 }
 
 DIRSTACKSIZE=20
@@ -123,19 +116,21 @@ setopt AUTO_PUSHD PUSHD_SILENT PUSHD_TO_HOME
 #-----------------------------------------------------------------------------#
 
 function sudo-command-line {
-    [[ -z $BUFFER ]] && zle up-history
-    if [[ $BUFFER == sudo\ * ]]; then
-        LBUFFER="${LBUFFER#sudo }"
-    elif [[ $BUFFER == $EDITOR\ * ]]; then
-        LBUFFER="${LBUFFER#$EDITOR }"
-        LBUFFER="sudoedit $LBUFFER"
-    elif [[ $BUFFER == sudoedit\ * ]]; then
-        LBUFFER="${LBUFFER#sudoedit }"
-        LBUFFER="$EDITOR $LBUFFER"
-    else
-        LBUFFER="sudo $LBUFFER"
-    fi
+  [[ -z $BUFFER ]] && zle up-history
+  if [[ $BUFFER == sudo\ * ]]; then
+    LBUFFER="${LBUFFER#sudo }"
+  elif [[ $BUFFER == $EDITOR\ * ]]; then
+    LBUFFER="${LBUFFER#$EDITOR }"
+    LBUFFER="sudoedit $LBUFFER"
+  elif [[ $BUFFER == sudoedit\ * ]]; then
+    LBUFFER="${LBUFFER#sudoedit }"
+    LBUFFER="$EDITOR $LBUFFER"
+  else
+    LBUFFER="sudo $LBUFFER"
+  fi
 }
 zle -N sudo-command-line
 # Defined shortcut keys: [Esc] [Esc]
 bindkey "\e\e" sudo-command-line
+
+which direnv && eval "$(direnv hook zsh)"
