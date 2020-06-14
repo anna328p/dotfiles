@@ -54,15 +54,21 @@ function urlencode {
   echo -n "${encoded}"
 }
 
-function shove {
-  filename=/tmp/shove-$RAND.txt
+function join_by { local IFS="$1"; shift; echo "$*"; }
 
-  scp $* image-upload@dk0.us:/var/www/files/uploads
+function shove {
+  URLS=()
+
   for i in $*; do
-    echo "http://u.dk0.us/"$(urlencode "$(basename $i)") | tee -a $filename
+    fn=$RANDOM-"$(basename "$i")"
+    scp "$i" image-upload@WebServer.dk0.us:/var/www/files/uploads/"$fn"
+
+    URL=$(printf "http://u.dk0.us/%s" $(urlencode "$fn"))
+    echo $URL
+    URLS+=$URL
   done
 
-  xclip -sel clip < $filename
+  join_by $'\n' "$URLS" | xclip -selection clipboard
 }
 
 function rain {
@@ -80,6 +86,7 @@ function scratch {
 
 function psgrep {
   ps aux | grep -v grep | grep $*
+
 }
 
 function try {
@@ -134,3 +141,5 @@ zle -N sudo-command-line
 bindkey "\e\e" sudo-command-line
 
 which direnv && eval "$(direnv hook zsh)"
+
+eval $(thefuck --alias)

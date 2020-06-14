@@ -2,6 +2,6 @@
 file=/tmp/$RANDOM.txt
 dest="http://u.dk0.us/"$(basename $file)
 cat > $file
-scp -q $file image-upload@dk0.us:/var/www/files/uploads
+scp -q $file image-upload@WebServer.dk0.us:/var/www/files/uploads
 echo -n $dest | tee /dev/stderr | xclip -sel clip
 echo
