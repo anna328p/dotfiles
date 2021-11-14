@@ -17,7 +17,7 @@ prerequisite programs:
 - other things
 
 these dotfiles are meant to be installed with yadm. first install yadm, then
-run `yadm clone git@github.com:dkudriavtsev/dotfiles` or equivalent.
+run `yadm clone git@github.com:anna328p/dotfiles` or equivalent.
 
 most of these dotfiles are customized for each of my machines. theseus is a
 fairly powerful desktop machine running NixOS. hermes is my old laptop
@@ -30,7 +30,6 @@ set for watbook. otherwise, go through the config options and set the ones
 you need.
 
 i recommend setting:
-- the username to your own, it's `dmitry` everywhere
 - shell configuration
 - if you see any issues, try to find the config for the relevant program
   and change values that look hardware-specific.
